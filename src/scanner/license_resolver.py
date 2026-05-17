@@ -6,9 +6,13 @@ LICENSE_MAP = {
     "django": "BSD-3-Clause",
     "scikit-learn": "BSD-3-Clause",
     "tensorflow": "Apache-2.0",
-    "torch": "BSD-3-Clause"
-}
+    "torch": "BSD-3-Clause",
 
+    "express": "MIT",
+    "react": "MIT",
+    "axios": "MIT",
+    "lodash": "MIT"
+}
 
 def resolve_license(package_name: str):
     return LICENSE_MAP.get(package_name.lower(), "Unknown")
