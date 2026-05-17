@@ -1,0 +1,31 @@
+license,license_family,project_type,distribution_model,usage,risk,reason
+BSD-3-Clause,Permissive,commercial closed-source,distributed,library,Low,BSD license is permissive and mainly requires retaining notices
+BSD-2-Clause,Permissive,commercial SaaS,hosted,library,Low,BSD-2-Clause has minimal compliance obligations
+MIT,Permissive,internal enterprise tool,internal-only,library,Low,Internal use with MIT license is generally low risk
+Apache-2.0,Permissive,open-source project,distributed,framework,Low,Apache-2.0 is permissive and suitable for open-source distribution
+Apache-2.0,Permissive,mobile application,distributed,library,Low,Apache license allows commercial use with attribution requirements
+GPL-2.0,Strong Copyleft,commercial desktop software,distributed,library,High,GPL-2.0 may require releasing derivative source code
+GPL-3.0,Strong Copyleft,commercial mobile app,distributed,library,High,GPL-3.0 creates strong copyleft obligations for distributed software
+GPL-3.0,Strong Copyleft,internal enterprise tool,internal-only,library,Medium,Internal-only use reduces GPL distribution obligations
+AGPL-3.0,Strong Copyleft,commercial SaaS,hosted,backend dependency,High,AGPL may require source disclosure for network-accessible software
+AGPL-3.0,Strong Copyleft,open-source SaaS,hosted,backend service,Medium,Open-source SaaS reduces AGPL compliance conflict risk
+LGPL-2.1,Weak Copyleft,commercial desktop software,distributed,dynamically linked library,Medium,Dynamic linking may satisfy LGPL obligations
+LGPL-3.0,Weak Copyleft,commercial mobile app,distributed,library,Medium,LGPL allows limited proprietary usage under conditions
+MPL-2.0,Weak Copyleft,commercial web application,distributed,library,Medium,MPL copyleft applies mainly at file level
+EPL-2.0,Weak Copyleft,enterprise software,distributed,framework,Medium,EPL contains limited copyleft requirements
+CDDL-1.0,Weak Copyleft,commercial server software,distributed,library,Medium,CDDL has file-level sharing obligations
+Unlicense,Public Domain,internal utility,internal-only,script,Low,Public domain style license creates minimal restrictions
+CC0-1.0,Public Domain,open-source dataset,distributed,data package,Low,CC0 waives most copyright restrictions
+Proprietary,Restricted,commercial closed-source,distributed,third-party SDK,High,Proprietary dependency may restrict redistribution rights
+Custom License,Unknown,commercial SaaS,hosted,library,High,Unknown custom license requires legal review
+Unknown,Unknown,commercial mobile app,distributed,library,High,Unknown license creates compliance uncertainty
+MIT,Permissive,educational project,distributed,library,Low,Educational distribution under MIT is low risk
+Apache-2.0,Permissive,government software,distributed,framework,Low,Apache-2.0 is commonly accepted in enterprise and public sector
+GPL-3.0,Strong Copyleft,IoT firmware,distributed,embedded library,High,GPL obligations may apply to firmware distribution
+LGPL-2.1,Weak Copyleft,commercial SaaS,hosted,shared library,Low,Hosted SaaS with LGPL shared library is usually lower risk
+MPL-2.0,Weak Copyleft,browser extension,distributed,plugin,Medium,MPL requires modified source files to remain open
+BSD-3-Clause,Permissive,research prototype,distributed,toolkit,Low,BSD license is flexible for research software
+AGPL-3.0,Strong Copyleft,cloud analytics platform,hosted,backend engine,High,Cloud-hosted AGPL software may trigger network copyleft clauses
+GPL-2.0,Strong Copyleft,open-source desktop app,distributed,library,Low,Open-source distribution aligns better with GPL obligations
+EPL-2.0,Weak Copyleft,financial enterprise software,distributed,framework,Medium,EPL obligations may affect modified components
+Custom License,Unknown,AI commercial platform,hosted,ML framework,High,Custom AI license terms require manual compliance review
