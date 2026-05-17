@@ -1,0 +1,271 @@
+license,license_family,project_type,distribution_model,usage,risk,reason
+EPL-2.0,Weak Copyleft,robotics control system,distributed,frontend component,Medium,File-level copyleft obligations create moderate compliance requirements
+MIT,Permissive,banking middleware,hosted,plugin framework,Low,Low risk because the license allows proprietary integration
+MIT,Permissive,AI inference platform,hosted,utility package,Low,License creates minimal compliance burden for commercial and hosted usage
+Proprietary,Restricted,robotics control system,internal-only,workflow engine,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+GPL-3.0,Strong Copyleft,cloud CRM platform,hosted,data processing module,High,High risk because network or redistribution obligations may conflict with commercial use
+Apache-2.0,Permissive,enterprise analytics platform,distributed,backend framework,Low,License creates minimal compliance burden for commercial and hosted usage
+LGPL-3.0,Weak Copyleft,financial reporting system,internal-only,API service,Medium,Moderate risk because source obligations usually apply to modified covered files
+AGPL-3.0,Strong Copyleft,AI inference platform,distributed,messaging framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+BSD-2-Clause,Permissive,healthcare portal,hosted,data processing module,Low,Public-domain style terms create minimal restriction for reuse
+CDDL-1.0,Weak Copyleft,scientific computing toolkit,hosted,plugin framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+GPL-3.0,Strong Copyleft,scientific computing toolkit,hosted,data processing module,High,High risk because network or redistribution obligations may conflict with commercial use
+LGPL-3.0,Weak Copyleft,healthcare portal,distributed,model serving framework,Medium,Moderate risk because source obligations usually apply to modified covered files
+Unlicense,Public Domain,embedded firmware,internal-only,API service,Low,Permissive license allows commercial use with attribution and notice obligations
+Proprietary,Restricted,cybersecurity monitoring tool,internal-only,shared library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+GPL-3.0,Strong Copyleft,cybersecurity monitoring tool,hosted,embedded library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+EPL-2.0,Weak Copyleft,AI inference platform,distributed,frontend component,Medium,File-level copyleft obligations create moderate compliance requirements
+Unknown,Unknown,industrial IoT platform,hosted,data processing module,High,High risk because network or redistribution obligations may conflict with commercial use
+LGPL-2.1,Weak Copyleft,banking middleware,hosted,data processing module,Medium,Weak copyleft obligations require compliance review but are limited in scope
+AGPL-3.0,Strong Copyleft,commercial ERP system,distributed,model serving framework,High,Restricted or unclear licensing terms require legal review before use
+EPL-2.0,Weak Copyleft,enterprise workflow system,distributed,frontend component,Medium,File-level copyleft obligations create moderate compliance requirements
+AGPL-3.0,Strong Copyleft,financial reporting system,distributed,backend framework,High,Unknown license creates unresolved legal and compliance uncertainty
+Custom License,Unknown,healthcare portal,distributed,backend framework,High,Unknown license creates unresolved legal and compliance uncertainty
+LGPL-2.1,Weak Copyleft,online education platform,internal-only,visualization library,Medium,Weak copyleft obligations require compliance review but are limited in scope
+Proprietary,Restricted,online education platform,internal-only,API service,High,Restricted or unclear licensing terms require legal review before use
+GPL-3.0,Strong Copyleft,embedded firmware,hosted,embedded library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Unknown,Unknown,banking middleware,hosted,core library,High,Restricted or unclear licensing terms require legal review before use
+MIT,Permissive,AI inference platform,hosted,utility package,Low,License creates minimal compliance burden for commercial and hosted usage
+MPL-2.0,Weak Copyleft,cybersecurity monitoring tool,hosted,utility package,Medium,LGPL-style usage may require relinking rights and license notice compliance
+EPL-2.0,Weak Copyleft,enterprise workflow system,internal-only,shared library,Medium,File-level copyleft obligations create moderate compliance requirements
+Custom License,Unknown,healthcare portal,distributed,backend framework,High,Unknown license creates unresolved legal and compliance uncertainty
+Apache-2.0,Permissive,online education platform,distributed,messaging framework,Low,Low risk because the license allows proprietary integration
+GPL-3.0,Strong Copyleft,internal enterprise tool,hosted,utility package,High,Unknown license creates unresolved legal and compliance uncertainty
+EPL-2.0,Weak Copyleft,enterprise analytics platform,distributed,frontend component,Medium,File-level copyleft obligations create moderate compliance requirements
+MIT,Permissive,commercial ERP system,hosted,plugin framework,Low,Low risk because the license allows proprietary integration
+LGPL-2.1,Weak Copyleft,commercial ERP system,distributed,SDK integration,Medium,Weak copyleft obligations require compliance review but are limited in scope
+Custom License,Unknown,enterprise analytics platform,distributed,messaging framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+GPL-2.0,Strong Copyleft,DevOps automation platform,internal-only,shared library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+GPL-2.0,Strong Copyleft,industrial IoT platform,internal-only,visualization library,High,High risk because network or redistribution obligations may conflict with commercial use
+BSD-3-Clause,Permissive,industrial IoT platform,internal-only,shared library,Low,Permissive terms support redistribution with copyright and license notice
+MIT,Permissive,commercial closed-source software,hosted,embedded library,Low,Permissive terms support redistribution with copyright and license notice
+GPL-3.0,Strong Copyleft,internal enterprise tool,hosted,utility package,High,Unknown license creates unresolved legal and compliance uncertainty
+Unlicense,Public Domain,healthcare portal,internal-only,visualization library,Low,Public-domain style terms create minimal restriction for reuse
+GPL-3.0,Strong Copyleft,robotics control system,hosted,plugin framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Unknown,Unknown,AI inference platform,hosted,plugin framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+BSD-2-Clause,Permissive,mobile application,hosted,plugin framework,Low,Low risk because the license allows proprietary integration
+LGPL-2.1,Weak Copyleft,banking middleware,distributed,SDK integration,Medium,Weak copyleft obligations require compliance review but are limited in scope
+BSD-2-Clause,Permissive,embedded firmware,hosted,core library,Low,Permissive license allows commercial use with attribution and notice obligations
+Custom License,Unknown,robotics control system,distributed,messaging framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Custom License,Unknown,scientific computing toolkit,distributed,SDK integration,High,High risk because network or redistribution obligations may conflict with commercial use
+Unlicense,Public Domain,embedded firmware,internal-only,API service,Low,Permissive license allows commercial use with attribution and notice obligations
+GPL-3.0,Strong Copyleft,online education platform,hosted,core library,High,Restricted or unclear licensing terms require legal review before use
+Apache-2.0,Permissive,internal enterprise tool,distributed,SDK integration,Low,Public-domain style terms create minimal restriction for reuse
+LGPL-2.1,Weak Copyleft,mobile application,hosted,data processing module,Medium,Weak copyleft obligations require compliance review but are limited in scope
+AGPL-3.0,Strong Copyleft,banking middleware,distributed,model serving framework,High,Restricted or unclear licensing terms require legal review before use
+GPL-3.0,Strong Copyleft,cloud CRM platform,hosted,data processing module,High,High risk because network or redistribution obligations may conflict with commercial use
+LGPL-2.1,Weak Copyleft,online education platform,distributed,SDK integration,Medium,Weak copyleft obligations require compliance review but are limited in scope
+CC0-1.0,Public Domain,desktop application,distributed,SDK integration,Low,Public-domain style terms create minimal restriction for reuse
+GPL-3.0,Strong Copyleft,healthcare portal,hosted,utility package,High,Unknown license creates unresolved legal and compliance uncertainty
+GPL-3.0,Strong Copyleft,embedded firmware,hosted,embedded library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+MIT,Permissive,desktop application,hosted,data processing module,Low,Public-domain style terms create minimal restriction for reuse
+EPL-2.0,Weak Copyleft,enterprise analytics platform,internal-only,shared library,Medium,File-level copyleft obligations create moderate compliance requirements
+GPL-2.0,Strong Copyleft,AI inference platform,internal-only,workflow engine,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Custom License,Unknown,cybersecurity monitoring tool,distributed,frontend component,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+CDDL-1.0,Weak Copyleft,commercial closed-source software,hosted,plugin framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+CDDL-1.0,Weak Copyleft,cloud CRM platform,hosted,plugin framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+BSD-2-Clause,Permissive,robotics control system,hosted,utility package,Low,License creates minimal compliance burden for commercial and hosted usage
+AGPL-3.0,Strong Copyleft,enterprise workflow system,distributed,messaging framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+CDDL-1.0,Weak Copyleft,industrial IoT platform,distributed,messaging framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+BSD-2-Clause,Permissive,cloud CRM platform,hosted,embedded library,Low,Permissive terms support redistribution with copyright and license notice
+MPL-2.0,Weak Copyleft,DevOps automation platform,internal-only,automation library,Medium,LGPL-style usage may require relinking rights and license notice compliance
+Proprietary,Restricted,cybersecurity monitoring tool,internal-only,shared library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+LGPL-2.1,Weak Copyleft,mobile application,hosted,data processing module,Medium,Weak copyleft obligations require compliance review but are limited in scope
+BSD-2-Clause,Permissive,enterprise analytics platform,hosted,utility package,Low,License creates minimal compliance burden for commercial and hosted usage
+CC0-1.0,Public Domain,DevOps automation platform,distributed,model serving framework,Low,Permissive license allows commercial use with attribution and notice obligations
+MIT,Permissive,commercial SaaS platform,hosted,core library,Low,Permissive license allows commercial use with attribution and notice obligations
+Custom License,Unknown,mobile application,distributed,model serving framework,High,Restricted or unclear licensing terms require legal review before use
+EPL-2.0,Weak Copyleft,AI inference platform,internal-only,shared library,Medium,File-level copyleft obligations create moderate compliance requirements
+CDDL-1.0,Weak Copyleft,scientific computing toolkit,internal-only,workflow engine,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+AGPL-3.0,Strong Copyleft,banking middleware,distributed,model serving framework,High,Restricted or unclear licensing terms require legal review before use
+AGPL-3.0,Strong Copyleft,financial reporting system,distributed,backend framework,High,Unknown license creates unresolved legal and compliance uncertainty
+CDDL-1.0,Weak Copyleft,industrial IoT platform,distributed,messaging framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+CC0-1.0,Public Domain,DevOps automation platform,distributed,model serving framework,Low,Permissive license allows commercial use with attribution and notice obligations
+MIT,Permissive,industrial IoT platform,hosted,embedded library,Low,Permissive terms support redistribution with copyright and license notice
+Apache-2.0,Permissive,embedded firmware,distributed,model serving framework,Low,Permissive license allows commercial use with attribution and notice obligations
+Apache-2.0,Permissive,cloud CRM platform,distributed,frontend component,Low,Permissive terms support redistribution with copyright and license notice
+MIT,Permissive,DevOps automation platform,hosted,core library,Low,Permissive license allows commercial use with attribution and notice obligations
+MPL-2.0,Weak Copyleft,DevOps automation platform,distributed,backend framework,Medium,LGPL-style usage may require relinking rights and license notice compliance
+CC0-1.0,Public Domain,AI inference platform,distributed,backend framework,Low,License creates minimal compliance burden for commercial and hosted usage
+GPL-2.0,Strong Copyleft,commercial ERP system,internal-only,API service,High,Restricted or unclear licensing terms require legal review before use
+EPL-2.0,Weak Copyleft,enterprise analytics platform,hosted,embedded library,Medium,File-level copyleft obligations create moderate compliance requirements
+LGPL-3.0,Weak Copyleft,healthcare portal,hosted,core library,Medium,Moderate risk because source obligations usually apply to modified covered files
+LGPL-2.1,Weak Copyleft,banking middleware,internal-only,visualization library,Medium,Weak copyleft obligations require compliance review but are limited in scope
+CC0-1.0,Public Domain,enterprise workflow system,distributed,backend framework,Low,License creates minimal compliance burden for commercial and hosted usage
+AGPL-3.0,Strong Copyleft,industrial IoT platform,distributed,SDK integration,High,High risk because network or redistribution obligations may conflict with commercial use
+Proprietary,Restricted,healthcare portal,internal-only,automation library,High,Unknown license creates unresolved legal and compliance uncertainty
+MPL-2.0,Weak Copyleft,embedded firmware,internal-only,automation library,Medium,LGPL-style usage may require relinking rights and license notice compliance
+LGPL-2.1,Weak Copyleft,banking middleware,internal-only,visualization library,Medium,Weak copyleft obligations require compliance review but are limited in scope
+GPL-2.0,Strong Copyleft,desktop application,internal-only,automation library,High,Unknown license creates unresolved legal and compliance uncertainty
+Apache-2.0,Permissive,internal enterprise tool,distributed,SDK integration,Low,Public-domain style terms create minimal restriction for reuse
+Unknown,Unknown,commercial closed-source software,hosted,data processing module,High,High risk because network or redistribution obligations may conflict with commercial use
+Unlicense,Public Domain,scientific computing toolkit,internal-only,shared library,Low,Permissive terms support redistribution with copyright and license notice
+LGPL-3.0,Weak Copyleft,internal enterprise tool,internal-only,API service,Medium,Moderate risk because source obligations usually apply to modified covered files
+BSD-2-Clause,Permissive,enterprise analytics platform,hosted,utility package,Low,License creates minimal compliance burden for commercial and hosted usage
+BSD-3-Clause,Permissive,commercial ERP system,internal-only,workflow engine,Low,Low risk because the license allows proprietary integration
+Custom License,Unknown,cybersecurity monitoring tool,distributed,frontend component,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Proprietary,Restricted,enterprise analytics platform,internal-only,workflow engine,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+LGPL-3.0,Weak Copyleft,internal enterprise tool,hosted,core library,Medium,Moderate risk because source obligations usually apply to modified covered files
+CC0-1.0,Public Domain,commercial closed-source software,distributed,frontend component,Low,Permissive terms support redistribution with copyright and license notice
+LGPL-3.0,Weak Copyleft,desktop application,hosted,core library,Medium,Moderate risk because source obligations usually apply to modified covered files
+CDDL-1.0,Weak Copyleft,commercial closed-source software,distributed,messaging framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+BSD-2-Clause,Permissive,online education platform,hosted,plugin framework,Low,Low risk because the license allows proprietary integration
+MPL-2.0,Weak Copyleft,embedded firmware,internal-only,automation library,Medium,LGPL-style usage may require relinking rights and license notice compliance
+CDDL-1.0,Weak Copyleft,scientific computing toolkit,distributed,messaging framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+MIT,Permissive,commercial SaaS platform,hosted,core library,Low,Permissive license allows commercial use with attribution and notice obligations
+Custom License,Unknown,scientific computing toolkit,distributed,SDK integration,High,High risk because network or redistribution obligations may conflict with commercial use
+GPL-2.0,Strong Copyleft,desktop application,internal-only,automation library,High,Unknown license creates unresolved legal and compliance uncertainty
+Unknown,Unknown,commercial ERP system,hosted,core library,High,Restricted or unclear licensing terms require legal review before use
+Apache-2.0,Permissive,scientific computing toolkit,distributed,frontend component,Low,Permissive terms support redistribution with copyright and license notice
+MPL-2.0,Weak Copyleft,commercial SaaS platform,hosted,utility package,Medium,LGPL-style usage may require relinking rights and license notice compliance
+Proprietary,Restricted,mobile application,internal-only,API service,High,Restricted or unclear licensing terms require legal review before use
+CC0-1.0,Public Domain,commercial closed-source software,distributed,frontend component,Low,Permissive terms support redistribution with copyright and license notice
+MPL-2.0,Weak Copyleft,embedded firmware,distributed,backend framework,Medium,LGPL-style usage may require relinking rights and license notice compliance
+CC0-1.0,Public Domain,financial reporting system,distributed,SDK integration,Low,Public-domain style terms create minimal restriction for reuse
+Unknown,Unknown,commercial SaaS platform,hosted,embedded library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Unknown,Unknown,DevOps automation platform,hosted,embedded library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+EPL-2.0,Weak Copyleft,AI inference platform,hosted,embedded library,Medium,File-level copyleft obligations create moderate compliance requirements
+GPL-3.0,Strong Copyleft,enterprise analytics platform,hosted,plugin framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Unlicense,Public Domain,healthcare portal,internal-only,visualization library,Low,Public-domain style terms create minimal restriction for reuse
+BSD-3-Clause,Permissive,commercial closed-source software,internal-only,shared library,Low,Permissive terms support redistribution with copyright and license notice
+CC0-1.0,Public Domain,desktop application,distributed,SDK integration,Low,Public-domain style terms create minimal restriction for reuse
+Unknown,Unknown,commercial closed-source software,hosted,data processing module,High,High risk because network or redistribution obligations may conflict with commercial use
+EPL-2.0,Weak Copyleft,AI inference platform,hosted,embedded library,Medium,File-level copyleft obligations create moderate compliance requirements
+EPL-2.0,Weak Copyleft,robotics control system,hosted,embedded library,Medium,File-level copyleft obligations create moderate compliance requirements
+LGPL-3.0,Weak Copyleft,financial reporting system,hosted,core library,Medium,Moderate risk because source obligations usually apply to modified covered files
+AGPL-3.0,Strong Copyleft,commercial closed-source software,distributed,SDK integration,High,High risk because network or redistribution obligations may conflict with commercial use
+Unknown,Unknown,desktop application,hosted,utility package,High,Unknown license creates unresolved legal and compliance uncertainty
+Custom License,Unknown,internal enterprise tool,distributed,backend framework,High,Unknown license creates unresolved legal and compliance uncertainty
+CC0-1.0,Public Domain,banking middleware,distributed,messaging framework,Low,Low risk because the license allows proprietary integration
+Unknown,Unknown,financial reporting system,hosted,utility package,High,Unknown license creates unresolved legal and compliance uncertainty
+GPL-2.0,Strong Copyleft,financial reporting system,internal-only,automation library,High,Unknown license creates unresolved legal and compliance uncertainty
+LGPL-3.0,Weak Copyleft,internal enterprise tool,distributed,model serving framework,Medium,Moderate risk because source obligations usually apply to modified covered files
+LGPL-2.1,Weak Copyleft,mobile application,internal-only,visualization library,Medium,Weak copyleft obligations require compliance review but are limited in scope
+LGPL-3.0,Weak Copyleft,desktop application,internal-only,API service,Medium,Moderate risk because source obligations usually apply to modified covered files
+Unknown,Unknown,banking middleware,hosted,core library,High,Restricted or unclear licensing terms require legal review before use
+Unknown,Unknown,financial reporting system,hosted,utility package,High,Unknown license creates unresolved legal and compliance uncertainty
+AGPL-3.0,Strong Copyleft,desktop application,distributed,backend framework,High,Unknown license creates unresolved legal and compliance uncertainty
+CDDL-1.0,Weak Copyleft,commercial closed-source software,internal-only,workflow engine,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+MPL-2.0,Weak Copyleft,embedded firmware,hosted,utility package,Medium,LGPL-style usage may require relinking rights and license notice compliance
+AGPL-3.0,Strong Copyleft,DevOps automation platform,distributed,frontend component,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+AGPL-3.0,Strong Copyleft,commercial SaaS platform,distributed,frontend component,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+BSD-2-Clause,Permissive,mobile application,hosted,plugin framework,Low,Low risk because the license allows proprietary integration
+Unlicense,Public Domain,cybersecurity monitoring tool,internal-only,API service,Low,Permissive license allows commercial use with attribution and notice obligations
+Custom License,Unknown,cloud CRM platform,distributed,SDK integration,High,High risk because network or redistribution obligations may conflict with commercial use
+MIT,Permissive,enterprise workflow system,hosted,utility package,Low,License creates minimal compliance burden for commercial and hosted usage
+GPL-3.0,Strong Copyleft,mobile application,hosted,core library,High,Restricted or unclear licensing terms require legal review before use
+LGPL-3.0,Weak Copyleft,financial reporting system,hosted,core library,Medium,Moderate risk because source obligations usually apply to modified covered files
+MPL-2.0,Weak Copyleft,commercial SaaS platform,internal-only,automation library,Medium,LGPL-style usage may require relinking rights and license notice compliance
+GPL-2.0,Strong Copyleft,enterprise workflow system,internal-only,workflow engine,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+CDDL-1.0,Weak Copyleft,scientific computing toolkit,hosted,plugin framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+LGPL-2.1,Weak Copyleft,commercial ERP system,internal-only,visualization library,Medium,Weak copyleft obligations require compliance review but are limited in scope
+MIT,Permissive,financial reporting system,hosted,data processing module,Low,Public-domain style terms create minimal restriction for reuse
+AGPL-3.0,Strong Copyleft,AI inference platform,distributed,messaging framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Custom License,Unknown,robotics control system,distributed,messaging framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+MPL-2.0,Weak Copyleft,cybersecurity monitoring tool,distributed,backend framework,Medium,LGPL-style usage may require relinking rights and license notice compliance
+BSD-3-Clause,Permissive,commercial SaaS platform,internal-only,API service,Low,Permissive license allows commercial use with attribution and notice obligations
+BSD-3-Clause,Permissive,banking middleware,internal-only,workflow engine,Low,Low risk because the license allows proprietary integration
+Proprietary,Restricted,cloud CRM platform,internal-only,visualization library,High,High risk because network or redistribution obligations may conflict with commercial use
+BSD-3-Clause,Permissive,financial reporting system,internal-only,visualization library,Low,Public-domain style terms create minimal restriction for reuse
+Unlicense,Public Domain,mobile application,internal-only,workflow engine,Low,Low risk because the license allows proprietary integration
+GPL-3.0,Strong Copyleft,online education platform,hosted,core library,High,Restricted or unclear licensing terms require legal review before use
+MPL-2.0,Weak Copyleft,cybersecurity monitoring tool,internal-only,automation library,Medium,LGPL-style usage may require relinking rights and license notice compliance
+EPL-2.0,Weak Copyleft,enterprise workflow system,internal-only,shared library,Medium,File-level copyleft obligations create moderate compliance requirements
+BSD-2-Clause,Permissive,healthcare portal,hosted,data processing module,Low,Public-domain style terms create minimal restriction for reuse
+Proprietary,Restricted,scientific computing toolkit,internal-only,visualization library,High,High risk because network or redistribution obligations may conflict with commercial use
+EPL-2.0,Weak Copyleft,robotics control system,internal-only,shared library,Medium,File-level copyleft obligations create moderate compliance requirements
+Unknown,Unknown,enterprise workflow system,hosted,plugin framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+BSD-3-Clause,Permissive,commercial closed-source software,internal-only,shared library,Low,Permissive terms support redistribution with copyright and license notice
+LGPL-3.0,Weak Copyleft,healthcare portal,internal-only,API service,Medium,Moderate risk because source obligations usually apply to modified covered files
+Apache-2.0,Permissive,mobile application,distributed,messaging framework,Low,Low risk because the license allows proprietary integration
+GPL-2.0,Strong Copyleft,commercial ERP system,internal-only,API service,High,Restricted or unclear licensing terms require legal review before use
+LGPL-2.1,Weak Copyleft,banking middleware,hosted,data processing module,Medium,Weak copyleft obligations require compliance review but are limited in scope
+MIT,Permissive,commercial ERP system,hosted,plugin framework,Low,Low risk because the license allows proprietary integration
+LGPL-2.1,Weak Copyleft,commercial ERP system,distributed,SDK integration,Medium,Weak copyleft obligations require compliance review but are limited in scope
+CDDL-1.0,Weak Copyleft,cloud CRM platform,distributed,messaging framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+Unknown,Unknown,enterprise workflow system,hosted,plugin framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+BSD-3-Clause,Permissive,banking middleware,internal-only,workflow engine,Low,Low risk because the license allows proprietary integration
+LGPL-3.0,Weak Copyleft,desktop application,distributed,model serving framework,Medium,Moderate risk because source obligations usually apply to modified covered files
+Unlicense,Public Domain,online education platform,internal-only,workflow engine,Low,Low risk because the license allows proprietary integration
+LGPL-2.1,Weak Copyleft,mobile application,distributed,SDK integration,Medium,Weak copyleft obligations require compliance review but are limited in scope
+CDDL-1.0,Weak Copyleft,cloud CRM platform,internal-only,workflow engine,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+Unlicense,Public Domain,enterprise analytics platform,internal-only,automation library,Low,License creates minimal compliance burden for commercial and hosted usage
+EPL-2.0,Weak Copyleft,AI inference platform,distributed,frontend component,Medium,File-level copyleft obligations create moderate compliance requirements
+MPL-2.0,Weak Copyleft,cybersecurity monitoring tool,distributed,backend framework,Medium,LGPL-style usage may require relinking rights and license notice compliance
+LGPL-3.0,Weak Copyleft,healthcare portal,hosted,core library,Medium,Moderate risk because source obligations usually apply to modified covered files
+GPL-2.0,Strong Copyleft,commercial SaaS platform,internal-only,shared library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Custom License,Unknown,online education platform,distributed,model serving framework,High,Restricted or unclear licensing terms require legal review before use
+Apache-2.0,Permissive,embedded firmware,distributed,model serving framework,Low,Permissive license allows commercial use with attribution and notice obligations
+Unlicense,Public Domain,internal enterprise tool,internal-only,visualization library,Low,Public-domain style terms create minimal restriction for reuse
+Proprietary,Restricted,internal enterprise tool,internal-only,automation library,High,Unknown license creates unresolved legal and compliance uncertainty
+BSD-3-Clause,Permissive,financial reporting system,internal-only,visualization library,Low,Public-domain style terms create minimal restriction for reuse
+Custom License,Unknown,mobile application,distributed,model serving framework,High,Restricted or unclear licensing terms require legal review before use
+CC0-1.0,Public Domain,commercial ERP system,distributed,messaging framework,Low,Low risk because the license allows proprietary integration
+CDDL-1.0,Weak Copyleft,commercial closed-source software,internal-only,workflow engine,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+Proprietary,Restricted,embedded firmware,internal-only,shared library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Unlicense,Public Domain,scientific computing toolkit,internal-only,shared library,Low,Permissive terms support redistribution with copyright and license notice
+GPL-2.0,Strong Copyleft,AI inference platform,internal-only,workflow engine,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Apache-2.0,Permissive,healthcare portal,distributed,SDK integration,Low,Public-domain style terms create minimal restriction for reuse
+MPL-2.0,Weak Copyleft,commercial SaaS platform,distributed,backend framework,Medium,LGPL-style usage may require relinking rights and license notice compliance
+MPL-2.0,Weak Copyleft,embedded firmware,hosted,utility package,Medium,LGPL-style usage may require relinking rights and license notice compliance
+EPL-2.0,Weak Copyleft,robotics control system,hosted,embedded library,Medium,File-level copyleft obligations create moderate compliance requirements
+LGPL-2.1,Weak Copyleft,online education platform,internal-only,visualization library,Medium,Weak copyleft obligations require compliance review but are limited in scope
+BSD-2-Clause,Permissive,cybersecurity monitoring tool,hosted,core library,Low,Permissive license allows commercial use with attribution and notice obligations
+LGPL-3.0,Weak Copyleft,financial reporting system,distributed,model serving framework,Medium,Moderate risk because source obligations usually apply to modified covered files
+BSD-3-Clause,Permissive,commercial SaaS platform,internal-only,API service,Low,Permissive license allows commercial use with attribution and notice obligations
+LGPL-3.0,Weak Copyleft,healthcare portal,distributed,model serving framework,Medium,Moderate risk because source obligations usually apply to modified covered files
+Apache-2.0,Permissive,robotics control system,distributed,backend framework,Low,License creates minimal compliance burden for commercial and hosted usage
+MPL-2.0,Weak Copyleft,DevOps automation platform,hosted,utility package,Medium,LGPL-style usage may require relinking rights and license notice compliance
+MPL-2.0,Weak Copyleft,DevOps automation platform,distributed,backend framework,Medium,LGPL-style usage may require relinking rights and license notice compliance
+GPL-2.0,Strong Copyleft,industrial IoT platform,internal-only,visualization library,High,High risk because network or redistribution obligations may conflict with commercial use
+Unlicense,Public Domain,robotics control system,internal-only,automation library,Low,License creates minimal compliance burden for commercial and hosted usage
+Custom License,Unknown,embedded firmware,distributed,frontend component,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Apache-2.0,Permissive,cloud CRM platform,distributed,frontend component,Low,Permissive terms support redistribution with copyright and license notice
+CDDL-1.0,Weak Copyleft,cloud CRM platform,internal-only,workflow engine,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+CC0-1.0,Public Domain,banking middleware,distributed,messaging framework,Low,Low risk because the license allows proprietary integration
+Proprietary,Restricted,cloud CRM platform,internal-only,visualization library,High,High risk because network or redistribution obligations may conflict with commercial use
+LGPL-3.0,Weak Copyleft,desktop application,internal-only,API service,Medium,Moderate risk because source obligations usually apply to modified covered files
+MIT,Permissive,desktop application,hosted,data processing module,Low,Public-domain style terms create minimal restriction for reuse
+MPL-2.0,Weak Copyleft,DevOps automation platform,internal-only,automation library,Medium,LGPL-style usage may require relinking rights and license notice compliance
+Unlicense,Public Domain,mobile application,internal-only,workflow engine,Low,Low risk because the license allows proprietary integration
+BSD-3-Clause,Permissive,AI inference platform,internal-only,automation library,Low,License creates minimal compliance burden for commercial and hosted usage
+BSD-3-Clause,Permissive,AI inference platform,internal-only,automation library,Low,License creates minimal compliance burden for commercial and hosted usage
+Proprietary,Restricted,enterprise analytics platform,internal-only,workflow engine,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+Apache-2.0,Permissive,cybersecurity monitoring tool,distributed,model serving framework,Low,Permissive license allows commercial use with attribution and notice obligations
+BSD-2-Clause,Permissive,internal enterprise tool,hosted,data processing module,Low,Public-domain style terms create minimal restriction for reuse
+Unknown,Unknown,DevOps automation platform,hosted,embedded library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+BSD-2-Clause,Permissive,cloud CRM platform,hosted,embedded library,Low,Permissive terms support redistribution with copyright and license notice
+EPL-2.0,Weak Copyleft,enterprise analytics platform,distributed,frontend component,Medium,File-level copyleft obligations create moderate compliance requirements
+EPL-2.0,Weak Copyleft,robotics control system,internal-only,shared library,Medium,File-level copyleft obligations create moderate compliance requirements
+CC0-1.0,Public Domain,commercial SaaS platform,distributed,model serving framework,Low,Permissive license allows commercial use with attribution and notice obligations
+AGPL-3.0,Strong Copyleft,industrial IoT platform,distributed,SDK integration,High,High risk because network or redistribution obligations may conflict with commercial use
+AGPL-3.0,Strong Copyleft,commercial SaaS platform,distributed,frontend component,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+Apache-2.0,Permissive,enterprise analytics platform,distributed,backend framework,Low,License creates minimal compliance burden for commercial and hosted usage
+GPL-2.0,Strong Copyleft,banking middleware,internal-only,API service,High,Restricted or unclear licensing terms require legal review before use
+Proprietary,Restricted,online education platform,internal-only,API service,High,Restricted or unclear licensing terms require legal review before use
+GPL-2.0,Strong Copyleft,DevOps automation platform,internal-only,shared library,High,Custom or proprietary terms may restrict redistribution and commercial deployment
+LGPL-2.1,Weak Copyleft,mobile application,distributed,SDK integration,Medium,Weak copyleft obligations require compliance review but are limited in scope
+GPL-3.0,Strong Copyleft,robotics control system,hosted,plugin framework,High,Strong copyleft obligations may require source disclosure for distributed proprietary software
+BSD-3-Clause,Permissive,enterprise workflow system,internal-only,automation library,Low,License creates minimal compliance burden for commercial and hosted usage
+MPL-2.0,Weak Copyleft,commercial SaaS platform,hosted,utility package,Medium,LGPL-style usage may require relinking rights and license notice compliance
+CDDL-1.0,Weak Copyleft,industrial IoT platform,internal-only,workflow engine,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+CDDL-1.0,Weak Copyleft,industrial IoT platform,hosted,plugin framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+LGPL-3.0,Weak Copyleft,internal enterprise tool,internal-only,API service,Medium,Moderate risk because source obligations usually apply to modified covered files
+Proprietary,Restricted,healthcare portal,internal-only,automation library,High,Unknown license creates unresolved legal and compliance uncertainty
+BSD-3-Clause,Permissive,DevOps automation platform,internal-only,API service,Low,Permissive license allows commercial use with attribution and notice obligations
+EPL-2.0,Weak Copyleft,enterprise workflow system,hosted,embedded library,Medium,File-level copyleft obligations create moderate compliance requirements
+Apache-2.0,Permissive,online education platform,distributed,messaging framework,Low,Low risk because the license allows proprietary integration
+CDDL-1.0,Weak Copyleft,industrial IoT platform,hosted,plugin framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+LGPL-3.0,Weak Copyleft,desktop application,distributed,model serving framework,Medium,Moderate risk because source obligations usually apply to modified covered files
+Unlicense,Public Domain,cloud CRM platform,internal-only,shared library,Low,Permissive terms support redistribution with copyright and license notice
+BSD-2-Clause,Permissive,cybersecurity monitoring tool,hosted,core library,Low,Permissive license allows commercial use with attribution and notice obligations
+CC0-1.0,Public Domain,enterprise workflow system,distributed,backend framework,Low,License creates minimal compliance burden for commercial and hosted usage
+GPL-2.0,Strong Copyleft,commercial closed-source software,internal-only,visualization library,High,High risk because network or redistribution obligations may conflict with commercial use
+BSD-3-Clause,Permissive,desktop application,internal-only,visualization library,Low,Public-domain style terms create minimal restriction for reuse
+CC0-1.0,Public Domain,industrial IoT platform,distributed,frontend component,Low,Permissive terms support redistribution with copyright and license notice
+Unlicense,Public Domain,robotics control system,internal-only,automation library,Low,License creates minimal compliance burden for commercial and hosted usage
+CDDL-1.0,Weak Copyleft,cloud CRM platform,distributed,messaging framework,Medium,Weak copyleft license is not as restrictive as GPL but still requires tracking
+LGPL-2.1,Weak Copyleft,commercial ERP system,hosted,data processing module,Medium,Weak copyleft obligations require compliance review but are limited in scope
+LGPL-2.1,Weak Copyleft,online education platform,hosted,data processing module,Medium,Weak copyleft obligations require compliance review but are limited in scope
+MIT,Permissive,industrial IoT platform,hosted,embedded library,Low,Permissive terms support redistribution with copyright and license notice
+BSD-2-Clause,Permissive,scientific computing toolkit,hosted,embedded library,Low,Permissive terms support redistribution with copyright and license notice
