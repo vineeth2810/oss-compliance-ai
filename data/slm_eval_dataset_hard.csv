@@ -1,0 +1,31 @@
+input,expected_risk
+"License: MIT License Family: Permissive Project Type: commercial closed-source software Distribution Model: distributed Usage: bundled dependency without attribution notice",High
+"License: Apache-2.0 License Family: Permissive Project Type: enterprise SaaS platform Distribution Model: hosted Usage: backend framework with removed NOTICE file",Medium
+"License: BSD-3-Clause License Family: Permissive Project Type: commercial desktop application Distribution Model: distributed Usage: modified dependency without copyright retention",Medium
+"License: LGPL-2.1 License Family: Weak Copyleft Project Type: commercial SaaS platform Distribution Model: hosted Usage: dynamically linked analytics library",Low
+"License: LGPL-3.0 License Family: Weak Copyleft Project Type: commercial desktop software Distribution Model: distributed Usage: statically linked rendering engine",High
+"License: MPL-2.0 License Family: Weak Copyleft Project Type: enterprise workflow system Distribution Model: distributed Usage: modified plugin module",Medium
+"License: EPL-2.0 License Family: Weak Copyleft Project Type: banking middleware Distribution Model: distributed Usage: unmodified messaging framework",Low
+"License: CDDL-1.0 License Family: Weak Copyleft Project Type: storage appliance software Distribution Model: distributed Usage: modified filesystem module",Medium
+"License: GPL-3.0 License Family: Strong Copyleft Project Type: internal enterprise tool Distribution Model: internal-only Usage: reporting library",Medium
+"License: GPL-2.0 License Family: Strong Copyleft Project Type: commercial IoT firmware Distribution Model: distributed Usage: kernel integration",High
+"License: AGPL-3.0 License Family: Strong Copyleft Project Type: commercial SaaS platform Distribution Model: hosted Usage: backend orchestration engine",High
+"License: AGPL-3.0 License Family: Strong Copyleft Project Type: internal analytics portal Distribution Model: internal-only Usage: reporting service",Medium
+"License: Proprietary License Family: Restricted Project Type: commercial AI platform Distribution Model: distributed Usage: embedded third-party SDK without vendor approval",High
+"License: Unknown License Family: Unknown Project Type: enterprise automation system Distribution Model: internal-only Usage: utility dependency with unclear ownership",Medium
+"License: Custom License License Family: Unknown Project Type: commercial robotics software Distribution Model: distributed Usage: proprietary control framework",High
+"License: MIT License Family: Permissive Project Type: commercial SaaS platform Distribution Model: hosted Usage: API gateway with proper attribution",Low
+"License: Apache-2.0 License Family: Permissive Project Type: enterprise analytics system Distribution Model: distributed Usage: bundled dependency with preserved NOTICE file",Low
+"License: BSD-2-Clause License Family: Permissive Project Type: internal banking tool Distribution Model: internal-only Usage: utility package",Low
+"License: LGPL-2.1 License Family: Weak Copyleft Project Type: enterprise CRM platform Distribution Model: distributed Usage: modified shared library without relinking support",High
+"License: MPL-2.0 License Family: Weak Copyleft Project Type: browser extension platform Distribution Model: distributed Usage: modified frontend component with source disclosure",Low
+"License: EPL-2.0 License Family: Weak Copyleft Project Type: commercial ERP system Distribution Model: distributed Usage: modified workflow engine",Medium
+"License: GPL-3.0 License Family: Strong Copyleft Project Type: commercial desktop software Distribution Model: distributed Usage: plugin-based optional integration",Medium
+"License: GPL-2.0 License Family: Strong Copyleft Project Type: hosted internal DevOps platform Distribution Model: internal-only Usage: automation library",Medium
+"License: AGPL-3.0 License Family: Strong Copyleft Project Type: public AI chatbot platform Distribution Model: hosted Usage: externally accessible inference engine",High
+"License: Proprietary License Family: Restricted Project Type: internal enterprise dashboard Distribution Model: internal-only Usage: licensed visualization SDK",Medium
+"License: Unknown License Family: Unknown Project Type: research prototype Distribution Model: internal-only Usage: experimental dependency",Low
+"License: Custom License License Family: Unknown Project Type: commercial cloud platform Distribution Model: hosted Usage: orchestration framework with redistribution restrictions",High
+"License: MIT License Family: Permissive Project Type: commercial embedded firmware Distribution Model: distributed Usage: reused library without attribution notice",Medium
+"License: LGPL-3.0 License Family: Weak Copyleft Project Type: commercial streaming platform Distribution Model: hosted Usage: dynamically linked media engine",Low
+"License: GPL-3.0 License Family: Strong Copyleft Project Type: commercial SaaS analytics platform Distribution Model: hosted Usage: backend reporting engine",High
