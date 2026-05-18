@@ -1,27 +1,36 @@
-LICENSE_MAP = {
-    "numpy": "BSD-3-Clause",
-    "pandas": "BSD-3-Clause",
-    "requests": "Apache-2.0",
-    "flask": "BSD-3-Clause",
-    "django": "BSD-3-Clause",
-    "scikit-learn": "BSD-3-Clause",
-    "tensorflow": "Apache-2.0",
-    "torch": "BSD-3-Clause",
-    "gpl-lib": "GPL-3.0",
-    "agpl-service": "AGPL-3.0",
+from src.scanner.dynamic_license_resolver import resolve_dynamic_license
+
+from src.scanner.spdx_normalizer import (
+    classify_license_family
+)
+
+
+FALLBACK_LICENSE_MAP = {
+    "gpl-lib": "GPL-3.0-only",
+    "agpl-service": "AGPL-3.0-only",
     "unknown-package": "Unknown",
-    "lgpl-media": "LGPL-2.1",
+    "lgpl-media": "LGPL-2.1-only",
     "mpl-plugin": "MPL-2.0",
-    "lgpl-ui": "LGPL-3.0",
-    "gpl-widget": "GPL-3.0",
+    "gpl-widget": "GPL-3.0-only",
+    "lgpl-ui": "LGPL-3.0-only",
     "unknown-js-lib": "Unknown",
-
-    "express": "MIT",
-    "react": "MIT",
-    "axios": "MIT",
-    "lodash": "MIT"
-
 }
 
-def resolve_license(package_name: str):
-    return LICENSE_MAP.get(package_name.lower(), "Unknown")
+
+def resolve_license(package_name, ecosystem="unknown"):
+    dynamic_license = resolve_dynamic_license(
+        package_name=package_name,
+        ecosystem=ecosystem
+    )
+
+    if dynamic_license != "Unknown":
+        return dynamic_license
+
+    return FALLBACK_LICENSE_MAP.get(
+        package_name.lower(),
+        "Unknown"
+    )
+
+
+def resolve_license_family(license_name):
+    return classify_license_family(license_name)

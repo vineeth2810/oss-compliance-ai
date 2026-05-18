@@ -1,21 +1,3 @@
-def map_license_family(license_name: str):
-    license_name = license_name.lower()
-
-    if any(x in license_name for x in ["mit", "apache", "bsd", "cc0", "unlicense"]):
-        return "Permissive"
-
-    if any(x in license_name for x in ["lgpl", "mpl", "epl", "cddl"]):
-        return "Weak Copyleft"
-
-    if any(x in license_name for x in ["agpl", "gpl"]):
-        return "Strong Copyleft"
-
-    if "proprietary" in license_name:
-        return "Restricted"
-
-    return "Unknown"
-
-
 def build_compliance_context(license_family: str):
     if license_family == "Permissive":
         return {
@@ -37,7 +19,7 @@ def build_compliance_context(license_family: str):
             "license_confidence": "medium"
         }
 
-    if license_family == "Strong Copyleft":
+    if license_family in ["Strong Copyleft", "Network Copyleft"]:
         return {
             "attribution_notice": "preserved",
             "license_text": "included",
@@ -71,18 +53,18 @@ def build_scenario(
     package_name,
     version,
     license_name,
+    license_family,
+    ecosystem,
+    package_manager,
     project_type="commercial SaaS platform",
     distribution_model="hosted",
     usage="library",
-    ecosystem="python",
-    package_manager="pip",
     dependency_scope="runtime",
     direct_or_transitive="direct",
     is_dev_dependency="no",
     linking_type="dynamic",
     commercial_use="yes"
 ):
-    license_family = map_license_family(license_name)
     compliance_context = build_compliance_context(license_family)
 
     scenario = (

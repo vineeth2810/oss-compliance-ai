@@ -1,36 +1,58 @@
 from src.scanner.dependency_parser import parse_requirements
 from src.scanner.node_parser import parse_package_json
 
-from src.scanner.license_resolver import resolve_license
+from src.scanner.license_resolver import (
+    resolve_license,
+    resolve_license_family
+)
+
 from src.scanner.feature_builder import build_scenario
 
 
 def scan_python_project(requirements_path: str):
     dependencies = parse_requirements(requirements_path)
 
-    return build_results(dependencies)
+    return build_results(
+        dependencies=dependencies,
+        ecosystem="python",
+        package_manager="pip"
+    )
 
 
 def scan_node_project(package_json_path: str):
     dependencies = parse_package_json(package_json_path)
 
-    return build_results(dependencies)
+    return build_results(
+        dependencies=dependencies,
+        ecosystem="node",
+        package_manager="npm"
+    )
 
 
-def build_results(dependencies):
+def build_results(dependencies, ecosystem, package_manager):
     results = []
 
     for dep in dependencies:
         package_name = dep["package"]
         version = dep["version"]
 
-        license_name = resolve_license(package_name)
+        license_name = resolve_license(
+            package_name=package_name,
+            ecosystem=ecosystem
+        )
+
+        license_family = resolve_license_family(license_name)
 
         scenario = build_scenario(
             package_name=package_name,
             version=version,
-            license_name=license_name
+            license_name=license_name,
+            license_family=license_family,
+            ecosystem=ecosystem,
+            package_manager=package_manager
         )
+
+        scenario["license_family"] = license_family
 
         results.append(scenario)
 
