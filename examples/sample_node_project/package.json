@@ -5,6 +5,9 @@
     "express": "^4.18.2",
     "react": "^18.2.0",
     "axios": "^1.6.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "gpl-widget": "^1.0.0",
+    "lgpl-ui": "^2.0.0",
+    "unknown-js-lib": "^0.1.0"
   }
 }

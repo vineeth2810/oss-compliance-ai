@@ -2,3 +2,8 @@ numpy==1.26.0
 requests==2.31.0
 pandas==2.2.0
 flask==3.0.0
+gpl-lib==1.0.0
+agpl-service==2.0.0
+unknown-package==0.1.0
+lgpl-media==1.2.0
+mpl-plugin==3.0.0
