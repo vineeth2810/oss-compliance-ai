@@ -69,9 +69,11 @@ def analyze_project(project_path):
         results.append({
             "package": item["package"],
             "version": item["version"],
+            "ecosystem": item.get("ecosystem", "unknown"),
+            "package_manager": item.get("package_manager", "unknown"),
             "license": item["license"],
             "license_family": item["license_family"],
-            "prediction": prediction
+            "prediction": prediction,
         })
 
     report_info = generate_reports(results)

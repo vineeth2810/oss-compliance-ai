@@ -5,7 +5,7 @@ from peft import PeftModel
 
 
 BASE_MODEL_NAME = "Qwen/Qwen2.5-7B-Instruct"
-LORA_MODEL_PATH = "models/qwen7b_oss_compliance_lora"
+LORA_MODEL_PATH = "models/qwen2_5_7b_oss_advanced_lora"
 
 
 print("Loading tokenizer...")

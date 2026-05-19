@@ -1,0 +1,27 @@
+[
+  {
+    "name": "GPL Runtime Dependency",
+    "scenario": "Package: gpl-lib\nLicense: GPL-3.0-only\nUsage Type: runtime library\nDistribution Model: redistributed\nNetwork Exposed: yes",
+    "expected_risk": "High"
+  },
+  {
+    "name": "LGPL Dynamic Linking",
+    "scenario": "Package: lgpl-ui\nLicense: LGPL-3.0-only\nLinking Type: dynamic\nUsage Type: runtime library",
+    "expected_risk": "Medium"
+  },
+  {
+    "name": "AGPL SaaS",
+    "scenario": "Package: agpl-service\nLicense: AGPL-3.0-only\nNetwork Exposed: yes\nDistribution Model: hosted",
+    "expected_risk": "High"
+  },
+  {
+    "name": "MIT Commercial SaaS",
+    "scenario": "Package: express\nLicense: MIT\nCommercial Use: yes\nDistribution Model: hosted",
+    "expected_risk": "Low"
+  },
+  {
+    "name": "MPL Modified Files",
+    "scenario": "Package: mpl-plugin\nLicense: MPL-2.0\nModified: modified",
+    "expected_risk": "Medium"
+  }
+]

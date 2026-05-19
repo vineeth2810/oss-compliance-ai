@@ -32,6 +32,7 @@ app.add_middleware(
 REPORT_PATH = Path("outputs/compliance_report.csv")
 SUMMARY_PATH = Path("outputs/project_summary.json")
 EXCEL_PATH = Path("outputs/compliance_report.xlsx")
+PDF_PATH = Path("outputs/compliance_report.pdf")
 
 
 class ScanRequest(BaseModel):
@@ -97,6 +98,7 @@ def scan_project(request: ScanRequest):
             "csv_report": report_info["csv_report"],
             "summary_report": report_info["summary_report"],
             "excel_report": report_info.get("excel_report"),
+            "pdf_report": report_info.get("pdf_report"),
             "overall_project_risk": report_info["summary"]["overall_project_risk"],
             "summary": report_info["summary"],
             "results": report_info["results"],
@@ -147,4 +149,17 @@ def download_excel_report():
         path=EXCEL_PATH,
         filename="compliance_report.xlsx",
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+@app.get("/download/pdf")
+def download_pdf_report():
+    if not PDF_PATH.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="PDF report not found. Run /scan first.",
+        )
+
+    return FileResponse(
+        path=PDF_PATH,
+        filename="compliance_report.pdf",
+        media_type="application/pdf",
     )
