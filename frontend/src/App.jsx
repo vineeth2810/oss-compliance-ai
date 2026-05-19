@@ -239,6 +239,9 @@ function App() {
               Download Excel Report
             </a>
           </div>
+            <a href={`${API_BASE}/download/pdf`} className="download-button">
+             Download PDF Report
+            </a>
 
           {renderTable(
             "High Risk Packages",
