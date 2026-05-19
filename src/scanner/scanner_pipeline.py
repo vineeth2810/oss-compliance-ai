@@ -1,9 +1,10 @@
 from src.scanner.dependency_parser import parse_requirements
 from src.scanner.node_parser import parse_package_json
+from src.scanner.pyproject_parser import parse_pyproject
 
 from src.scanner.license_resolver import (
     resolve_license,
-    resolve_license_family
+    resolve_license_family,
 )
 
 from src.scanner.feature_builder import build_scenario
@@ -15,7 +16,17 @@ def scan_python_project(requirements_path: str):
     return build_results(
         dependencies=dependencies,
         ecosystem="python",
-        package_manager="pip"
+        package_manager="pip",
+    )
+
+
+def scan_pyproject(pyproject_path: str):
+    dependencies = parse_pyproject(pyproject_path)
+
+    return build_results(
+        dependencies=dependencies,
+        ecosystem="python",
+        package_manager="pyproject",
     )
 
 
@@ -25,7 +36,7 @@ def scan_node_project(package_json_path: str):
     return build_results(
         dependencies=dependencies,
         ecosystem="node",
-        package_manager="npm"
+        package_manager="npm",
     )
 
 
@@ -38,7 +49,7 @@ def build_results(dependencies, ecosystem, package_manager):
 
         license_name = resolve_license(
             package_name=package_name,
-            ecosystem=ecosystem
+            ecosystem=ecosystem,
         )
 
         license_family = resolve_license_family(license_name)
@@ -49,10 +60,8 @@ def build_results(dependencies, ecosystem, package_manager):
             license_name=license_name,
             license_family=license_family,
             ecosystem=ecosystem,
-            package_manager=package_manager
+            package_manager=package_manager,
         )
-
-        scenario["license_family"] = license_family
 
         results.append(scenario)
 
@@ -62,7 +71,7 @@ def build_results(dependencies, ecosystem, package_manager):
 if __name__ == "__main__":
 
     print("=" * 60)
-    print("PYTHON PROJECT")
+    print("PYTHON REQUIREMENTS PROJECT")
     print("=" * 60)
 
     python_results = scan_python_project(
@@ -71,6 +80,21 @@ if __name__ == "__main__":
 
     for item in python_results:
         print(item)
+
+    print("\n" + "=" * 60)
+    print("PYPROJECT PROJECT")
+    print("=" * 60)
+
+    try:
+        pyproject_results = scan_pyproject(
+            "examples/sample_python_project/pyproject.toml"
+        )
+
+        for item in pyproject_results:
+            print(item)
+
+    except FileNotFoundError:
+        print("No sample pyproject.toml found.")
 
     print("\n" + "=" * 60)
     print("NODE PROJECT")
