@@ -60,6 +60,7 @@ def clean_license_text(raw_license):
 def choose_primary_license(valid_tokens):
     priority_order = [
         "AGPL",
+        "SSPL",
         "GPL",
         "LGPL",
         "MPL",
@@ -82,6 +83,52 @@ def choose_primary_license(valid_tokens):
     return valid_tokens[0] if valid_tokens else "Unknown"
 
 
+def normalize_classifier(text):
+    lower = text.lower()
+
+    classifier_aliases = {
+        "license :: osi approved :: mit license": "MIT",
+        "license :: osi approved :: apache software license": "Apache-2.0",
+        "license :: osi approved :: bsd license": "BSD-3-Clause",
+        "license :: osi approved :: isc license": "ISC",
+        "license :: osi approved :: zlib/libpng license": "Zlib",
+        "license :: osi approved :: mozilla public license 2.0 mpl 2.0": "MPL-2.0",
+        "license :: osi approved :: gnu general public license v3 gplv3": "GPL-3.0-only",
+        "license :: osi approved :: gnu lesser general public license v3 lgplv3": "LGPL-3.0-only",
+        "license :: osi approved :: gnu affero general public license v3": "AGPL-3.0-only",
+    }
+
+    if lower in classifier_aliases:
+        return classifier_aliases[lower]
+
+    if lower.startswith("license ::"):
+        if "mit license" in lower:
+            return "MIT"
+
+        if "apache software license" in lower:
+            return "Apache-2.0"
+
+        if "bsd license" in lower:
+            return "BSD-3-Clause"
+
+        if "isc license" in lower:
+            return "ISC"
+
+        if "mozilla public license" in lower:
+            return "MPL-2.0"
+
+        if "lesser general public license" in lower:
+            return "LGPL-3.0-only"
+
+        if "affero general public license" in lower:
+            return "AGPL-3.0-only"
+
+        if "general public license" in lower:
+            return "GPL-3.0-only"
+
+    return "Unknown"
+
+
 def normalize_license(raw_license):
     text = clean_license_text(raw_license)
 
@@ -89,6 +136,15 @@ def normalize_license(raw_license):
         return "Unknown"
 
     lower = text.lower()
+
+    if lower in ["unknown", "none", "n/a", "not specified"]:
+        return "Unknown"
+
+    classifier_result = normalize_classifier(text)
+
+    if classifier_result != "Unknown":
+        return classifier_result
+
     spdx_licenses = load_spdx_licenses()
 
     if lower in spdx_licenses:

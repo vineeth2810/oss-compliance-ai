@@ -1,10 +1,24 @@
+import re
 import requests
 
 from src.scanner.spdx_normalizer import normalize_license
 
 
+def clean_package_name(package_name: str):
+    name = package_name.strip()
+
+    # Remove extras: celery[redis] -> celery
+    name = re.sub(r"\[.*?\]", "", name)
+
+    # Remove common version/operator leftovers if any
+    name = re.split(r"[<>=!~]", name)[0]
+
+    return name.strip()
+
+
 def resolve_pypi_license(package_name):
-    url = f"https://pypi.org/pypi/{package_name}/json"
+    clean_name = clean_package_name(package_name)
+    url = f"https://pypi.org/pypi/{clean_name}/json"
 
     try:
         response = requests.get(url, timeout=10)
@@ -15,35 +29,36 @@ def resolve_pypi_license(package_name):
         data = response.json()
         info = data.get("info", {})
 
-        license_value = info.get("license")
-        normalized = normalize_license(license_value)
-
-        if normalized != "Unknown":
-            return normalized
-
+        # 1. PEP 639 license expression
         license_expression = info.get("license_expression")
         normalized = normalize_license(license_expression)
 
         if normalized != "Unknown":
             return normalized
 
+        # 2. Direct license field
+        license_value = info.get("license")
+        normalized = normalize_license(license_value)
+
+        if normalized != "Unknown":
+            return normalized
+
+        # 3. Classifiers
         classifiers = info.get("classifiers", [])
 
         for classifier in classifiers:
-            if "License ::" in classifier:
+            if classifier.startswith("License ::"):
                 normalized = normalize_license(classifier)
 
                 if normalized != "Unknown":
                     return normalized
 
-        project_urls = info.get("project_urls") or {}
+        # 4. Summary / description fallback, conservative
+        summary = info.get("summary", "")
+        normalized = normalize_license(summary)
 
-        for key, value in project_urls.items():
-            combined = f"{key} {value}"
-            normalized = normalize_license(combined)
-
-            if normalized != "Unknown":
-                return normalized
+        if normalized != "Unknown":
+            return normalized
 
         return "Unknown"
 
@@ -52,7 +67,8 @@ def resolve_pypi_license(package_name):
 
 
 def resolve_npm_license(package_name):
-    url = f"https://registry.npmjs.org/{package_name}"
+    clean_name = clean_package_name(package_name)
+    url = f"https://registry.npmjs.org/{clean_name}"
 
     try:
         response = requests.get(url, timeout=10)

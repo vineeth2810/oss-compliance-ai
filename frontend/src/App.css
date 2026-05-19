@@ -9,6 +9,14 @@ body {
   padding: 32px;
 }
 
+h1 {
+  margin-bottom: 24px;
+}
+
+h2 {
+  margin-top: 32px;
+}
+
 .scan-card {
   background: white;
   padding: 24px;
@@ -17,14 +25,17 @@ body {
   gap: 12px;
   align-items: end;
   margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .scan-card label {
+  display: block;
   font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .scan-card input {
-  width: 520px;
+  width: 560px;
   padding: 10px;
   font-size: 15px;
 }
@@ -35,6 +46,28 @@ body {
   color: white;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.scan-card button:disabled {
+  background: #9ca3af;
+}
+
+.progress-wrapper {
+  width: 100%;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.progress-bar {
+  background: #2563eb;
+  color: white;
+  text-align: center;
+  padding: 6px 0;
+  transition: width 0.3s ease;
+  font-size: 13px;
 }
 
 .summary {
@@ -48,10 +81,12 @@ body {
   background: white;
   padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .metric span {
   display: block;
+  font-size: 14px;
   color: #6b7280;
 }
 
@@ -77,11 +112,34 @@ body {
   border-left: 6px solid #6b7280;
 }
 
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.actions {
+  margin: 24px 0;
+}
+
+.download-button {
+  display: inline-block;
+  background: #111827;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   background: white;
   margin-bottom: 32px;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 th,
@@ -103,10 +161,23 @@ th {
   display: inline-block;
 }
 
+.empty-state {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  color: #4b5563;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
 .error {
   background: #fee2e2;
   color: #991b1b;
   padding: 14px;
   border-radius: 8px;
   margin-bottom: 20px;
+}
+
+a {
+  color: #2563eb;
 }
