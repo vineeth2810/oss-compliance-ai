@@ -134,7 +134,10 @@ function App() {
               <th>Ecosystem</th>
               <th>License</th>
               <th>Family</th>
-              <th>Risk</th>
+              <th>License Risk</th>
+              <th>Security Risk</th>
+              <th>Combined Risk</th>
+              <th>Vulnerabilities</th>
               <th>Reason</th>
               <th>Link</th>
             </tr>
@@ -148,12 +151,52 @@ function App() {
                 <td>{item.ecosystem}</td>
                 <td>{item.license}</td>
                 <td>{item.license_family}</td>
+
                 <td>
                   <span className={`badge ${riskClass(item.risk)}`}>
                     {item.risk}
                   </span>
                 </td>
+
+                <td>
+                  <span className={`badge ${riskClass(item.security_risk)}`}>
+                    {item.security_risk || "Low"}
+                  </span>
+                </td>
+
+                <td>
+                  <span className={`badge ${riskClass(item.combined_risk)}`}>
+                    {item.combined_risk || "Low"}
+                  </span>
+                </td>
+
+                <td>
+                  {item.vulnerability_count > 0 ? (
+                    <details>
+                      <summary>View {item.vulnerability_count}</summary>
+
+                      <ul className="vuln-list">
+                        {(item.vulnerabilities || []).map((vuln, vulnIndex) => (
+                          <li key={vulnIndex}>
+                            <a
+                              href={`https://osv.dev/vulnerability/${vuln.id}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {vuln.id}
+                            </a>
+                            {vuln.summary ? ` - ${vuln.summary}` : ""}
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : (
+                    "0"
+                  )}
+                </td>
+
                 <td>{item.reason}</td>
+
                 <td>
                   {item.package_url ? (
                     <a href={item.package_url} target="_blank" rel="noreferrer">
@@ -297,6 +340,20 @@ function App() {
 
             <a href={`${API_BASE}/download/pdf`} className="download-button">
               Download PDF Report
+            </a>
+
+            <a
+              href={`${API_BASE}/download/sbom/cyclonedx`}
+              className="download-button"
+            >
+              Download CycloneDX SBOM
+            </a>
+
+            <a
+              href={`${API_BASE}/download/sbom/spdx`}
+              className="download-button"
+            >
+              Download SPDX SBOM
             </a>
           </div>
 

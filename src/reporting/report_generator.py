@@ -15,10 +15,24 @@ from reportlab.platypus import (
     TableStyle,
     Image,
 )
-
+from src.security.osv_client import (
+    lookup_vulnerabilities,
+    calculate_security_risk,
+    build_vulnerability_url,
+)
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
+
+from src.reporting.sbom_generator import (
+    generate_cyclonedx_sbom,
+    generate_spdx_sbom,
+)
+
+from src.security.osv_client import (
+    lookup_vulnerabilities,
+    calculate_security_risk,
+)
 
 
 def extract_risk_and_reason(prediction: str):
@@ -60,6 +74,58 @@ def calculate_overall_project_risk(risk_counts):
         return "Medium"
 
     return "Low"
+RISK_PRIORITY = {
+    "Low": 1,
+    "Medium": 2,
+    "High": 3,
+    "Unknown": 4,
+}
+
+
+def calculate_combined_risk(
+    license_risk,
+    security_risk,
+):
+    if RISK_PRIORITY.get(security_risk, 0) > RISK_PRIORITY.get(license_risk, 0):
+        return security_risk
+
+    return license_risk
+
+
+def build_combined_reason(
+    license_risk,
+    security_risk,
+):
+    if (
+        license_risk == "High"
+        and security_risk == "High"
+    ):
+        return (
+            "High license compliance risk combined with "
+            "multiple known security vulnerabilities."
+        )
+
+    if security_risk == "High":
+        return (
+            "Package contains multiple known vulnerabilities "
+            "that increase production security risk."
+        )
+
+    if license_risk == "High":
+        return (
+            "Package introduces strong copyleft or network "
+            "license obligations."
+        )
+
+    if (
+        license_risk == "Medium"
+        or security_risk == "Medium"
+    ):
+        return (
+            "Package has moderate compliance or security considerations."
+        )
+
+    return "Low combined compliance and security risk."
 
 
 def generate_risk_chart(risk_summary, chart_path):
@@ -224,17 +290,48 @@ def generate_reports(results, output_dir="outputs"):
 
         ecosystem = item.get("ecosystem", "unknown")
 
+        package_name = item["package"]
+        version = item["version"]
+
+        vulnerabilities = lookup_vulnerabilities(
+            package_name=package_name,
+            version=version,
+            ecosystem=ecosystem,
+        )
+
+        security_risk = calculate_security_risk(vulnerabilities)
+
         structured_results.append({
-            "package": item["package"],
-            "version": item["version"],
+            "package": package_name,
+            "version": version,
             "ecosystem": ecosystem,
             "package_manager": item.get("package_manager", "unknown"),
             "license": item["license"],
             "license_family": item["license_family"],
+
+            # License risk
             "risk": risk,
             "reason": reason,
+
+            # Security risk
+            "security_risk": security_risk,
+            "vulnerability_count": len(vulnerabilities),
+            "vulnerabilities": vulnerabilities,
+
+            # Combined risk
+            "combined_risk": calculate_combined_risk(
+                risk,
+                security_risk,
+            ),
+
+            "combined_reason": build_combined_reason(
+                risk,
+                security_risk,
+            ),
+
+            # Package URL
             "package_url": build_package_url(
-                item["package"],
+                package_name,
                 ecosystem,
             ),
         })
@@ -262,6 +359,11 @@ def generate_reports(results, output_dir="outputs"):
         "license",
         "license_family",
         "risk",
+        "security_risk",
+        "vulnerability_count",
+        "vulnerability_url",
+        "combined_risk",
+        "combined_reason",
         "reason",
         "package_url",
     ]
@@ -269,10 +371,21 @@ def generate_reports(results, output_dir="outputs"):
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(structured_results)
+
+        csv_results = []
+
+        for item in structured_results:
+            csv_item = item.copy()
+
+            # Remove nested vulnerability objects for CSV export
+            csv_item.pop("vulnerabilities", None)
+
+            csv_results.append(csv_item)
+
+        writer.writerows(csv_results)
 
     with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-        pd.DataFrame(structured_results).to_excel(
+        pd.DataFrame(csv_results).to_excel(
             writer,
             index=False,
             sheet_name="Dependency Report",
@@ -296,6 +409,9 @@ def generate_reports(results, output_dir="outputs"):
         chart_path,
     )
 
+    cyclonedx_sbom = generate_cyclonedx_sbom(structured_results)
+    spdx_sbom = generate_spdx_sbom(structured_results)
+
     return {
         "json_report": str(json_path),
         "csv_report": str(csv_path),
@@ -303,5 +419,7 @@ def generate_reports(results, output_dir="outputs"):
         "excel_report": str(excel_path),
         "pdf_report": str(pdf_path),
         "results": structured_results,
+        "cyclonedx_sbom": cyclonedx_sbom,
+        "spdx_sbom": spdx_sbom,
         "summary": summary,
     }

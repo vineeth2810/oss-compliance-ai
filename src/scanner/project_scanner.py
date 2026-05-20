@@ -38,26 +38,22 @@ IGNORED_DIRS = {
     "testing",
     "fixtures",
     "fixture",
-    "examples",
-    "example",
+     
     "demo",
     "docs",
     "documentation",
     "benchmarks",
     "benchmark",
-    "samples",
-    "sample",
+    
 }
 
 
 IGNORE_PATH_KEYWORDS = [
     "fixture",
     "fixtures",
-    "example",
-    "examples",
+
     "demo",
-    "sample",
-    "samples",
+ 
     "benchmark",
     "benchmarks",
 ]

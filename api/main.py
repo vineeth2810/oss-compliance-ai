@@ -42,6 +42,8 @@ REPORT_PATH = Path("outputs/compliance_report.csv")
 SUMMARY_PATH = Path("outputs/project_summary.json")
 EXCEL_PATH = Path("outputs/compliance_report.xlsx")
 PDF_PATH = Path("outputs/compliance_report.pdf")
+CYCLONEDX_SBOM_PATH = Path("outputs/sbom_cyclonedx.json")
+SPDX_SBOM_PATH = Path("outputs/sbom_spdx.json")
 
 
 class ScanRequest(BaseModel):
@@ -333,4 +335,32 @@ def download_pdf_report():
         path=PDF_PATH,
         filename="compliance_report.pdf",
         media_type="application/pdf",
+    )
+@app.get("/download/sbom/cyclonedx")
+def download_cyclonedx_sbom():
+    if not CYCLONEDX_SBOM_PATH.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="CycloneDX SBOM not found.",
+        )
+
+    return FileResponse(
+        path=CYCLONEDX_SBOM_PATH,
+        filename="sbom_cyclonedx.json",
+        media_type="application/json",
+    )
+
+
+@app.get("/download/sbom/spdx")
+def download_spdx_sbom():
+    if not SPDX_SBOM_PATH.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="SPDX SBOM not found.",
+        )
+
+    return FileResponse(
+        path=SPDX_SBOM_PATH,
+        filename="sbom_spdx.json",
+        media_type="application/json",
     )
