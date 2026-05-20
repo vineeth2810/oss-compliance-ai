@@ -1,6 +1,7 @@
 from src.scanner.dependency_parser import parse_requirements
 from src.scanner.node_parser import parse_package_json
 from src.scanner.pyproject_parser import parse_pyproject
+from src.scanner.package_lock_parser import parse_package_lock
 
 from src.scanner.license_resolver import (
     resolve_license,
@@ -37,6 +38,16 @@ def scan_node_project(package_json_path: str):
         dependencies=dependencies,
         ecosystem="node",
         package_manager="npm",
+    )
+
+
+def scan_package_lock(package_lock_path: str):
+    dependencies = parse_package_lock(package_lock_path)
+
+    return build_results(
+        dependencies=dependencies,
+        ecosystem="node",
+        package_manager="npm-lock",
     )
 
 
@@ -97,7 +108,7 @@ if __name__ == "__main__":
         print("No sample pyproject.toml found.")
 
     print("\n" + "=" * 60)
-    print("NODE PROJECT")
+    print("NODE PACKAGE.JSON PROJECT")
     print("=" * 60)
 
     node_results = scan_node_project(
@@ -106,3 +117,18 @@ if __name__ == "__main__":
 
     for item in node_results:
         print(item)
+
+    print("\n" + "=" * 60)
+    print("NODE PACKAGE-LOCK PROJECT")
+    print("=" * 60)
+
+    try:
+        lock_results = scan_package_lock(
+            "frontend/package-lock.json"
+        )
+
+        for item in lock_results:
+            print(item)
+
+    except FileNotFoundError:
+        print("No frontend/package-lock.json found.")

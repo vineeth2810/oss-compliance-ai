@@ -5,6 +5,7 @@ from src.scanner.scanner_pipeline import (
     scan_python_project,
     scan_pyproject,
     scan_node_project,
+    scan_package_lock,
 )
 
 from src.inference.qwen_inference import predict_risk
@@ -15,7 +16,65 @@ SUPPORTED_FILES = {
     "requirements.txt": "python_requirements",
     "pyproject.toml": "python_pyproject",
     "package.json": "node",
+    "package-lock.json": "node_lock",
 }
+
+
+IGNORED_DIRS = {
+    ".git",
+    ".venv",
+    "venv",
+    "node_modules",
+    "__pycache__",
+    "dist",
+    "build",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+
+    # Test/demo/example folders
+    "tests",
+    "test",
+    "testing",
+    "fixtures",
+    "fixture",
+    "examples",
+    "example",
+    "demo",
+    "docs",
+    "documentation",
+    "benchmarks",
+    "benchmark",
+    "samples",
+    "sample",
+}
+
+
+IGNORE_PATH_KEYWORDS = [
+    "fixture",
+    "fixtures",
+    "example",
+    "examples",
+    "demo",
+    "sample",
+    "samples",
+    "benchmark",
+    "benchmarks",
+]
+
+
+def should_ignore_path(file_path: Path) -> bool:
+    path_parts = {part.lower() for part in file_path.parts}
+
+    if path_parts.intersection(IGNORED_DIRS):
+        return True
+
+    path_string = str(file_path).lower()
+
+    if any(keyword in path_string for keyword in IGNORE_PATH_KEYWORDS):
+        return True
+
+    return False
 
 
 def find_dependency_files(project_path):
@@ -26,18 +85,8 @@ def find_dependency_files(project_path):
 
     discovered_files = []
 
-    ignored_dirs = {
-        ".git",
-        ".venv",
-        "venv",
-        "node_modules",
-        "__pycache__",
-        "dist",
-        "build",
-    }
-
     for file_path in project_root.rglob("*"):
-        if any(part in ignored_dirs for part in file_path.parts):
+        if should_ignore_path(file_path):
             continue
 
         if file_path.name in SUPPORTED_FILES:
@@ -61,6 +110,8 @@ def analyze_discovered_file(file_info):
 
     if ecosystem == "node":
         return scan_node_project(path)
+    if ecosystem == "node_lock":
+        return scan_package_lock(path)
 
     return []
 
@@ -110,7 +161,6 @@ def analyze_project(project_path):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) < 2:
         print("Usage:")
         print("python -m src.scanner.project_scanner <project_path>")

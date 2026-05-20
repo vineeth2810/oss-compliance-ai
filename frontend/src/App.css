@@ -181,3 +181,60 @@ th {
 a {
   color: #2563eb;
 }
+.input-section {
+  flex: 1;
+}
+
+.supported-inputs {
+  margin-top: 10px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.supported-inputs p {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.supported-inputs ul {
+  margin-top: 6px;
+  padding-left: 20px;
+  list-style-type: disc;
+  text-align: left;
+  display: inline-block;
+}
+
+.supported-inputs li {
+  margin-bottom: 4px;
+}
+.supported-inputs {
+  margin-top: 12px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+  align-items: center;
+}
+.upload-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-section input[type="file"] {
+  padding: 10px;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
+.upload-section button {
+  width: fit-content;
+}

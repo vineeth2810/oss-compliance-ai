@@ -1,26 +1,61 @@
 import tomllib
 
+from src.scanner.dependency_normalizer import (
+    normalize_package_name,
+    normalize_version,
+    deduplicate_dependencies,
+)
+
 
 def parse_dependency_string(dep_string):
-    dep_string = dep_string.strip()
+    dep_string = str(dep_string).strip()
 
     if not dep_string:
         return None
 
-    clean_name = dep_string
+    dep_string = dep_string.split(";")[0].strip()
 
-    for operator in ["==", ">=", "<=", "~=", ">", "<"]:
+    # PEP 508 style:
+    # requests>=2.0
+    # cachecontrol[filecache] (>=0.14,<0.15)
+    if "(" in dep_string and ")" in dep_string:
+        name_part = dep_string.split("(", 1)[0].strip()
+        version_part = dep_string.split("(", 1)[1].split(")", 1)[0].strip()
+
+        return {
+            "package": normalize_package_name(name_part),
+            "version": normalize_version(version_part),
+        }
+
+    for operator in ["==", ">=", "<=", "~=", "!=", ">", "<", "^", "~"]:
         if operator in dep_string:
-            clean_name = dep_string.split(operator)[0].strip()
-            version = dep_string.split(operator)[1].strip()
+            name_part, version_part = dep_string.split(operator, 1)
+
             return {
-                "package": clean_name,
-                "version": version
+                "package": normalize_package_name(name_part),
+                "version": normalize_version(operator + version_part),
             }
 
     return {
-        "package": clean_name,
-        "version": "unknown"
+        "package": normalize_package_name(dep_string),
+        "version": "unknown",
+    }
+
+
+def parse_poetry_dependency(package_name, version_value):
+    if package_name.lower() == "python":
+        return None
+
+    if isinstance(version_value, str):
+        version = version_value
+    elif isinstance(version_value, dict):
+        version = version_value.get("version", "unknown")
+    else:
+        version = "unknown"
+
+    return {
+        "package": normalize_package_name(package_name),
+        "version": normalize_version(version),
     }
 
 
@@ -30,7 +65,7 @@ def parse_pyproject(pyproject_path):
     with open(pyproject_path, "rb") as f:
         data = tomllib.load(f)
 
-    # PEP 621 format:
+    # PEP 621:
     # [project]
     # dependencies = [...]
     project = data.get("project", {})
@@ -42,7 +77,7 @@ def parse_pyproject(pyproject_path):
         if parsed:
             dependencies.append(parsed)
 
-    # Optional dependencies:
+    # PEP 621 optional dependencies:
     # [project.optional-dependencies]
     optional_dependencies = project.get("optional-dependencies", {})
 
@@ -53,28 +88,28 @@ def parse_pyproject(pyproject_path):
             if parsed:
                 dependencies.append(parsed)
 
-    # Poetry format:
+    # Poetry:
     # [tool.poetry.dependencies]
     poetry = data.get("tool", {}).get("poetry", {})
     poetry_dependencies = poetry.get("dependencies", {})
 
     for package_name, version_value in poetry_dependencies.items():
-        if package_name.lower() == "python":
-            continue
+        parsed = parse_poetry_dependency(package_name, version_value)
 
-        if isinstance(version_value, str):
-            version = version_value
-        elif isinstance(version_value, dict):
-            version = version_value.get("version", "unknown")
-        else:
-            version = "unknown"
+        if parsed:
+            dependencies.append(parsed)
 
-        dependencies.append({
-            "package": package_name,
-            "version": version
-        })
+    # Poetry old dev dependencies:
+    # [tool.poetry.dev-dependencies]
+    poetry_dev_dependencies = poetry.get("dev-dependencies", {})
 
-    # Poetry dev dependencies:
+    for package_name, version_value in poetry_dev_dependencies.items():
+        parsed = parse_poetry_dependency(package_name, version_value)
+
+        if parsed:
+            dependencies.append(parsed)
+
+    # Poetry groups:
     # [tool.poetry.group.dev.dependencies]
     poetry_groups = poetry.get("group", {})
 
@@ -82,23 +117,9 @@ def parse_pyproject(pyproject_path):
         group_dependencies = group_data.get("dependencies", {})
 
         for package_name, version_value in group_dependencies.items():
-            if isinstance(version_value, str):
-                version = version_value
-            elif isinstance(version_value, dict):
-                version = version_value.get("version", "unknown")
-            else:
-                version = "unknown"
+            parsed = parse_poetry_dependency(package_name, version_value)
 
-            dependencies.append({
-                "package": package_name,
-                "version": version
-            })
+            if parsed:
+                dependencies.append(parsed)
 
-    # Remove duplicates
-    unique = {}
-
-    for dep in dependencies:
-        key = dep["package"].lower()
-        unique[key] = dep
-
-    return list(unique.values())
+    return deduplicate_dependencies(dependencies)

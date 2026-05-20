@@ -2,18 +2,12 @@ import re
 import requests
 
 from src.scanner.spdx_normalizer import normalize_license
+from src.scanner.dependency_normalizer import normalize_package_name
+
 
 
 def clean_package_name(package_name: str):
-    name = package_name.strip()
-
-    # Remove extras: celery[redis] -> celery
-    name = re.sub(r"\[.*?\]", "", name)
-
-    # Remove common version/operator leftovers if any
-    name = re.split(r"[<>=!~]", name)[0]
-
-    return name.strip()
+    return normalize_package_name(package_name)
 
 
 def resolve_pypi_license(package_name):

@@ -22,46 +22,84 @@ const COLORS = {
 
 function App() {
   const [projectPath, setProjectPath] = useState("examples");
+  const [uploadFile, setUploadFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [scanStage, setScanStage] = useState("");
   const [summary, setSummary] = useState(null);
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
-  const scanProject = async () => {
-    setLoading(true);
+  const resetResults = () => {
     setError("");
     setSummary(null);
     setResults([]);
-    setProgress(10);
+  };
 
-    const timer = setInterval(() => {
-      setProgress((oldValue) => {
-        if (oldValue >= 90) {
-          return oldValue;
-        }
+  const scanProject = async () => {
+    setLoading(true);
+    resetResults();
+    setScanStage("Preparing scan...");
 
-        return oldValue + 10;
-      });
-    }, 700);
+    const stageTimers = [
+      setTimeout(() => setScanStage("Cloning or preparing project source..."), 700),
+      setTimeout(() => setScanStage("Discovering dependency files..."), 1800),
+      setTimeout(() => setScanStage("Resolving package licenses..."), 3200),
+      setTimeout(() => setScanStage("Running AI compliance analysis..."), 5000),
+      setTimeout(() => setScanStage("Generating reports and charts..."), 7000),
+    ];
 
     try {
       const response = await axios.post(`${API_BASE}/scan`, {
         project_path: projectPath,
       });
 
-      setProgress(100);
       setSummary(response.data.summary);
       setResults(response.data.results || []);
     } catch (err) {
       setError(err.response?.data?.detail || "Scan failed.");
     } finally {
-      clearInterval(timer);
+      stageTimers.forEach((timer) => clearTimeout(timer));
+      setLoading(false);
+      setScanStage("");
+    }
+  };
 
-      setTimeout(() => {
-        setLoading(false);
-        setProgress(0);
-      }, 700);
+  const uploadAndScan = async () => {
+    if (!uploadFile) {
+      setError("Please select a .zip, .tar.gz, or .tgz archive file.");
+      return;
+    }
+
+    setLoading(true);
+    resetResults();
+    setScanStage("Uploading project archive...");
+
+    const stageTimers = [
+      setTimeout(() => setScanStage("Extracting uploaded archive..."), 900),
+      setTimeout(() => setScanStage("Discovering dependency files..."), 1800),
+      setTimeout(() => setScanStage("Resolving package licenses..."), 3200),
+      setTimeout(() => setScanStage("Running AI compliance analysis..."), 5000),
+      setTimeout(() => setScanStage("Generating reports and charts..."), 7000),
+    ];
+
+    const formData = new FormData();
+    formData.append("file", uploadFile);
+
+    try {
+      const response = await axios.post(`${API_BASE}/upload-scan`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setSummary(response.data.summary);
+      setResults(response.data.results || []);
+    } catch (err) {
+      setError(err.response?.data?.detail || "Upload scan failed.");
+    } finally {
+      stageTimers.forEach((timer) => clearTimeout(timer));
+      setLoading(false);
+      setScanStage("");
     }
   };
 
@@ -69,7 +107,6 @@ function App() {
     if (risk === "High") return "risk-high";
     if (risk === "Medium") return "risk-medium";
     if (risk === "Low") return "risk-low";
-
     return "risk-unknown";
   };
 
@@ -82,66 +119,57 @@ function App() {
       ].filter((item) => item.value > 0)
     : [];
 
-  const renderTable = (title, rows, emptyText) => {
-    return (
-      <>
-        <h2>{title}</h2>
+  const renderTable = (title, rows, emptyText) => (
+    <>
+      <h2>{title}</h2>
 
-        {rows.length === 0 ? (
-          <div className="empty-state">{emptyText}</div>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Package</th>
-                <th>Version</th>
-                <th>Ecosystem</th>
-                <th>License</th>
-                <th>Family</th>
-                <th>Risk</th>
-                <th>Reason</th>
-                <th>Link</th>
+      {rows.length === 0 ? (
+        <div className="empty-state">{emptyText}</div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Ecosystem</th>
+              <th>License</th>
+              <th>Family</th>
+              <th>Risk</th>
+              <th>Reason</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {rows.map((item, index) => (
+              <tr key={index}>
+                <td>{item.package}</td>
+                <td>{item.version}</td>
+                <td>{item.ecosystem}</td>
+                <td>{item.license}</td>
+                <td>{item.license_family}</td>
+                <td>
+                  <span className={`badge ${riskClass(item.risk)}`}>
+                    {item.risk}
+                  </span>
+                </td>
+                <td>{item.reason}</td>
+                <td>
+                  {item.package_url ? (
+                    <a href={item.package_url} target="_blank" rel="noreferrer">
+                      View
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
               </tr>
-            </thead>
-
-            <tbody>
-              {rows.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.package}</td>
-                  <td>{item.version}</td>
-                  <td>{item.ecosystem}</td>
-                  <td>{item.license}</td>
-                  <td>{item.license_family}</td>
-
-                  <td>
-                    <span className={`badge ${riskClass(item.risk)}`}>
-                      {item.risk}
-                    </span>
-                  </td>
-
-                  <td>{item.reason}</td>
-
-                  <td>
-                    {item.package_url ? (
-                      <a
-                        href={item.package_url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        View
-                      </a>
-                    ) : (
-                      "-"
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </>
-    );
-  };
+            ))}
+          </tbody>
+        </table>
+      )}
+    </>
+  );
 
   const lowRiskRows = results.filter((item) => item.risk === "Low");
 
@@ -150,14 +178,24 @@ function App() {
       <h1>OSS Compliance AI Dashboard</h1>
 
       <div className="scan-card">
-        <div>
-          <label>Project Path or GitHub URL</label>
+        <div className="input-section">
+          <label>Project Path or Repository URL</label>
 
           <input
             value={projectPath}
             onChange={(e) => setProjectPath(e.target.value)}
-            placeholder="examples or https://github.com/pallets/flask"
+            placeholder="https://github.com/pallets/flask"
           />
+
+          <div className="supported-inputs">
+            <p>Supported inputs:</p>
+            <ul>
+              <li>GitHub / GitLab repository URLs</li>
+              <li>Generic .git repository URLs</li>
+              <li>.zip / .tar.gz / .tgz project archive URLs</li>
+              <li>Local project paths available to the backend</li>
+            </ul>
+          </div>
         </div>
 
         <button onClick={scanProject} disabled={loading}>
@@ -165,11 +203,30 @@ function App() {
         </button>
       </div>
 
+      <div className="upload-card">
+        <div className="input-section">
+          <label>Upload Project Archive</label>
+
+          <input
+            type="file"
+            accept=".zip,.tar.gz,.tgz"
+            onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+          />
+
+          <p className="upload-help">
+            Upload a compressed project archive to scan private or local projects.
+          </p>
+        </div>
+
+        <button onClick={uploadAndScan} disabled={loading}>
+          {loading ? "Scanning..." : "Upload & Scan"}
+        </button>
+      </div>
+
       {loading && (
-        <div className="progress-wrapper">
-          <div className="progress-bar" style={{ width: `${progress}%` }}>
-            {progress}%
-          </div>
+        <div className="loading-card">
+          <div className="spinner"></div>
+          <p>{scanStage}</p>
         </div>
       )}
 
@@ -226,7 +283,6 @@ function App() {
                       />
                     ))}
                   </Pie>
-
                   <Tooltip />
                   <Legend />
                 </PieChart>
@@ -238,10 +294,11 @@ function App() {
             <a href={`${API_BASE}/download/excel`} className="download-button">
               Download Excel Report
             </a>
-          </div>
+
             <a href={`${API_BASE}/download/pdf`} className="download-button">
-             Download PDF Report
+              Download PDF Report
             </a>
+          </div>
 
           {renderTable(
             "High Risk Packages",
@@ -261,11 +318,7 @@ function App() {
             "No low-risk packages found."
           )}
 
-          {renderTable(
-            "Full Dependency Report",
-            results,
-            "No dependencies found."
-          )}
+          {renderTable("Full Dependency Report", results, "No dependencies found.")}
         </>
       )}
     </div>
