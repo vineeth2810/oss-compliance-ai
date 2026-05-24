@@ -29,6 +29,10 @@ function App() {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
+  const [chatQuestion, setChatQuestion] = useState("");
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatResponse, setChatResponse] = useState(null);
+
   const resetResults = () => {
     setError("");
     setSummary(null);
@@ -100,6 +104,27 @@ function App() {
       stageTimers.forEach((timer) => clearTimeout(timer));
       setLoading(false);
       setScanStage("");
+    }
+  };
+
+  const askChatbot = async () => {
+    if (!chatQuestion.trim()) {
+      return;
+    }
+
+    setChatLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post(`${API_BASE}/chat`, {
+        question: chatQuestion,
+      });
+
+      setChatResponse(response.data);
+    } catch (err) {
+      setError(err.response?.data?.detail || "Chat request failed.");
+    } finally {
+      setChatLoading(false);
     }
   };
 
@@ -265,6 +290,38 @@ function App() {
           {loading ? "Scanning..." : "Upload & Scan"}
         </button>
       </div>
+
+      <section className="chat-card">
+        <h2>OSS Compliance Assistant</h2>
+
+        <div className="chat-input-row">
+          <input
+            value={chatQuestion}
+            onChange={(e) => setChatQuestion(e.target.value)}
+            placeholder="Ask about licenses, vulnerabilities, policies..."
+          />
+
+          <button onClick={askChatbot} disabled={chatLoading}>
+            {chatLoading ? "Thinking..." : "Ask"}
+          </button>
+        </div>
+
+        {chatResponse && (
+          <div className="chat-response">
+            <h3>Answer</h3>
+
+            <p>{chatResponse.answer}</p>
+
+            <h4>Sources</h4>
+
+            <ul>
+              {(chatResponse.sources || []).map((source, index) => (
+                <li key={index}>{source}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
 
       {loading && (
         <div className="loading-card">

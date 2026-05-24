@@ -8,6 +8,8 @@ from src.scanner.scanner_pipeline import (
     scan_package_lock,
 )
 
+from src.scanner.cpp_scanner import scan_cpp_project
+from src.scanner.spdx_source_scanner import scan_spdx_source_licenses
 from src.inference.qwen_inference import predict_risk
 from src.reporting.report_generator import generate_reports
 
@@ -31,29 +33,23 @@ IGNORED_DIRS = {
     ".mypy_cache",
     ".pytest_cache",
     ".ruff_cache",
-
-    # Test/demo/example folders
     "tests",
     "test",
     "testing",
     "fixtures",
     "fixture",
-     
     "demo",
     "docs",
     "documentation",
     "benchmarks",
     "benchmark",
-    
 }
 
 
 IGNORE_PATH_KEYWORDS = [
     "fixture",
     "fixtures",
-
     "demo",
- 
     "benchmark",
     "benchmarks",
 ]
@@ -106,6 +102,7 @@ def analyze_discovered_file(file_info):
 
     if ecosystem == "node":
         return scan_node_project(path)
+
     if ecosystem == "node_lock":
         return scan_package_lock(path)
 
@@ -125,6 +122,22 @@ def analyze_project(project_path):
     for file_info in dependency_files:
         scenarios = analyze_discovered_file(file_info)
         all_scenarios.extend(scenarios)
+
+    print("Scanning C/C++ dependency files...")
+    cpp_scenarios = scan_cpp_project(project_path)
+
+    if cpp_scenarios:
+        print(f"Discovered C/C++ dependencies: {len(cpp_scenarios)}")
+
+    all_scenarios.extend(cpp_scenarios)
+
+    print("Scanning source SPDX license identifiers...")
+    spdx_scenarios = scan_spdx_source_licenses(project_path)
+
+    if spdx_scenarios:
+        print(f"Discovered source SPDX license groups: {len(spdx_scenarios)}")
+
+    all_scenarios.extend(spdx_scenarios)
 
     results = []
 

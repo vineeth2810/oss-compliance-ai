@@ -20,6 +20,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from src.scanner.project_scanner import analyze_project
+from src.rag.chatbot import ComplianceChatbot
 
 
 app = FastAPI(
@@ -38,6 +39,18 @@ app.add_middleware(
 )
 
 
+chatbot = None
+
+
+def get_chatbot():
+    global chatbot
+
+    if chatbot is None:
+        chatbot = ComplianceChatbot()
+
+    return chatbot
+
+
 REPORT_PATH = Path("outputs/compliance_report.csv")
 SUMMARY_PATH = Path("outputs/project_summary.json")
 EXCEL_PATH = Path("outputs/compliance_report.xlsx")
@@ -48,6 +61,10 @@ SPDX_SBOM_PATH = Path("outputs/sbom_spdx.json")
 
 class ScanRequest(BaseModel):
     project_path: str
+
+
+class ChatRequest(BaseModel):
+    question: str
 
 
 def classify_input_source(value: str):
@@ -66,7 +83,6 @@ def classify_input_source(value: str):
         if (
             "github.com" in parsed.netloc
             or "gitlab.com" in parsed.netloc
-            or "bitbucket.org" in parsed.netloc
             or lower.endswith(".git")
         ):
             return "git_repo"
@@ -118,13 +134,10 @@ def download_archive(archive_url: str):
 
         if lower.endswith(".zip"):
             archive_path = archive_path.with_suffix(".zip")
-
         elif lower.endswith(".tar.gz"):
             archive_path = archive_path.with_suffix(".tar.gz")
-
         elif lower.endswith(".tgz"):
             archive_path = archive_path.with_suffix(".tgz")
-
         else:
             raise RuntimeError("Unsupported archive format")
 
@@ -137,7 +150,6 @@ def download_archive(archive_url: str):
         if archive_path.suffix == ".zip":
             with zipfile.ZipFile(archive_path, "r") as zip_ref:
                 zip_ref.extractall(extract_dir)
-
         elif str(archive_path).endswith(".tar.gz") or str(archive_path).endswith(".tgz"):
             with tarfile.open(archive_path, "r:gz") as tar_ref:
                 tar_ref.extractall(extract_dir)
@@ -165,7 +177,7 @@ def prepare_scan_target(input_value: str):
 
     if source_type == "unsupported_url":
         raise RuntimeError(
-            "Unsupported URL. Provide a Git repository URL, GitHub/GitLab/Bitbucket URL, "
+            "Unsupported URL. Provide a Git repository URL, GitHub/GitLab URL, "
             "or a direct .zip/.tar.gz/.tgz archive URL."
         )
 
@@ -182,7 +194,6 @@ def root():
             "local project path",
             "GitHub repository URL",
             "GitLab repository URL",
-            "Bitbucket repository URL",
             "generic .git repository URL",
             ".zip archive URL",
             ".tar.gz archive URL",
@@ -190,10 +201,14 @@ def root():
         ],
         "endpoints": [
             "/scan",
+            "/upload-scan",
+            "/chat",
             "/summary",
             "/report",
             "/download/excel",
             "/download/pdf",
+            "/download/sbom/cyclonedx",
+            "/download/sbom/spdx",
         ],
     }
 
@@ -219,6 +234,8 @@ def scan_project(request: ScanRequest):
             "summary_report": report_info["summary_report"],
             "excel_report": report_info.get("excel_report"),
             "pdf_report": report_info.get("pdf_report"),
+            "cyclonedx_sbom": report_info.get("cyclonedx_sbom"),
+            "spdx_sbom": report_info.get("spdx_sbom"),
             "overall_project_risk": report_info["summary"]["overall_project_risk"],
             "summary": report_info["summary"],
             "results": report_info["results"],
@@ -230,6 +247,7 @@ def scan_project(request: ScanRequest):
     finally:
         if temp_dir:
             shutil.rmtree(temp_dir, ignore_errors=True)
+
 
 @app.post("/upload-scan")
 async def upload_scan(file: UploadFile = File(...)):
@@ -259,7 +277,6 @@ async def upload_scan(file: UploadFile = File(...)):
         if filename.endswith(".zip"):
             with zipfile.ZipFile(upload_path, "r") as zip_ref:
                 zip_ref.extractall(extract_dir)
-
         else:
             with tarfile.open(upload_path, "r:gz") as tar_ref:
                 tar_ref.extractall(extract_dir)
@@ -275,14 +292,22 @@ async def upload_scan(file: UploadFile = File(...)):
             "csv_report": report_info["csv_report"],
             "excel_report": report_info.get("excel_report"),
             "pdf_report": report_info.get("pdf_report"),
+            "cyclonedx_sbom": report_info.get("cyclonedx_sbom"),
+            "spdx_sbom": report_info.get("spdx_sbom"),
         }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
     finally:
-        shutil.rmtree(temp_dir, ignore_errors=True)            
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
+
+@app.post("/chat")
+def chat(request: ChatRequest):
+    bot = get_chatbot()
+    response = bot.ask(request.question)
+    return response
 
 @app.get("/summary")
 def get_summary():
@@ -336,6 +361,8 @@ def download_pdf_report():
         filename="compliance_report.pdf",
         media_type="application/pdf",
     )
+
+
 @app.get("/download/sbom/cyclonedx")
 def download_cyclonedx_sbom():
     if not CYCLONEDX_SBOM_PATH.exists():

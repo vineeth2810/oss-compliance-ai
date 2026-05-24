@@ -257,3 +257,32 @@ a {
 .vuln-list a:hover {
   text-decoration: underline;
 }
+.chat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.chat-input-row input {
+  flex: 1;
+}
+
+.chat-response {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.chat-response ul {
+  margin-top: 10px;
+  padding-left: 20px;
+}
