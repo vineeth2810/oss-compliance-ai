@@ -5,3 +5,8 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .env
+vector_store/
+.venv/
+node_modules/
+frontend/node_modules/
+mlruns/
