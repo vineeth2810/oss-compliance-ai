@@ -116,7 +116,7 @@ def scan_spdx_source_licenses(project_path):
 
         results.append({
             "package": package_name,
-            "version": f"{count} files",
+            "version": f"source-count:{count}",
             "ecosystem": "source",
             "package_manager": "spdx-source",
             "license": license_id,

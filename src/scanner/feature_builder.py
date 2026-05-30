@@ -63,7 +63,7 @@ def build_scenario(
     direct_or_transitive="direct",
     is_dev_dependency="no",
     linking_type="dynamic",
-    commercial_use="yes"
+    commercial_use="yes",
 ):
     compliance_context = build_compliance_context(license_family)
 
@@ -87,7 +87,8 @@ def build_scenario(
         f"License Text: {compliance_context['license_text']} "
         f"Source Modified: {compliance_context['source_modified']} "
         f"Redistribution: {compliance_context['redistribution']} "
-        f"License Confidence: {compliance_context['license_confidence']}"
+        f"License Confidence: {compliance_context['license_confidence']} "
+        f"Dependency scope is {dependency_scope}. "
     )
 
     return {
@@ -112,4 +113,5 @@ def build_scenario(
         "redistribution": compliance_context["redistribution"],
         "license_confidence": compliance_context["license_confidence"],
         "scenario": scenario
+
     }

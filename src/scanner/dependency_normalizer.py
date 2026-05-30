@@ -66,7 +66,10 @@ def deduplicate_dependencies(dependencies):
 
     for dep in dependencies:
         normalized = normalize_dependency(dep)
-        key = normalized["package"]
+        key = (
+            normalized["package"],
+            normalized.get("ecosystem", "unknown"),
+        )
 
         if key == "unknown":
             continue

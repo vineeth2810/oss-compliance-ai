@@ -36,6 +36,7 @@ Combined Risk: {item.get("combined_risk")}
 Vulnerability Count: {item.get("vulnerability_count")}
 Reason: {item.get("reason")}
 Combined Reason: {item.get("combined_reason")}
+AI Remediation: {item.get("ai_remediation")}
 """
             )
 
@@ -108,9 +109,20 @@ def build_computed_scan_insights(report):
         if item.get("combined_risk") == "High"
     ]
 
+    package_names = sorted(
+        set(
+            item.get("package")
+            for item in report
+            if item.get("package")
+        )
+    )
+
     lines = [
         "# Computed Scan Insights",
         f"Total packages scanned: {total_packages}",
+        "",
+        "Latest scan package list:",
+        "Packages in latest scan: " + ", ".join(package_names),
         "",
         "License counts:",
     ]
@@ -234,5 +246,75 @@ def build_computed_scan_insights(report):
                 f"and security risk {top.get('security_risk')}."
             ),
         ])
+
+    lines.append("")
+    lines.append("Recommended remediation priorities:")
+
+    priority_items = sorted(
+        report,
+        key=lambda x: (
+            x.get("combined_risk") != "High",
+            x.get("combined_risk") != "Medium",
+        )
+    )
+
+    for item in priority_items[:5]:
+        lines.append(
+            f"- {item.get('package')} "
+            f"(combined risk: {item.get('combined_risk')}) "
+            f"Reason: {item.get('combined_reason')}"
+        )
+
+        remediation = item.get("ai_remediation")
+
+        if remediation:
+            lines.append(f"AI Recommendation: {remediation}")
+        high_security_packages = [
+        item for item in report
+        if item.get("security_risk") == "High"
+    ]
+
+    lines.append("")
+    lines.append(f"High security risk packages found: {len(high_security_packages)}")
+
+    for item in high_security_packages:
+        lines.append(
+            f"- {item.get('package')} "
+            f"version {item.get('version')} "
+            f"has security risk {item.get('security_risk')} "
+            f"with {item.get('vulnerability_count')} vulnerabilities "
+            f"and combined risk {item.get('combined_risk')}"
+        )
+
+    if high_security_packages:
+        top_security_package = sorted(
+            high_security_packages,
+            key=lambda item: int(item.get("vulnerability_count", 0) or 0),
+            reverse=True,
+        )[0]
+
+        lines.append("")
+        lines.append(
+            "Package with highest security risk: "
+            f"{top_security_package.get('package')} "
+            f"version {top_security_package.get('version')} "
+            f"with {top_security_package.get('vulnerability_count')} vulnerabilities."
+        )  
+    if high_security_packages:
+        most_vulnerable = sorted(
+            high_security_packages,
+            key=lambda item: int(
+            item.get("vulnerability_count", 0) or 0
+        ),
+            reverse=True,
+        )[0]
+
+        lines.append("")
+        lines.append(
+            "Most vulnerable package in latest scan: "
+            f"{most_vulnerable.get('package')} "
+            f"with {most_vulnerable.get('vulnerability_count')} "
+            f"known vulnerabilities."
+        )          
 
     return "\n".join(lines)

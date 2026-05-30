@@ -81,10 +81,21 @@ def find_dependency_files(project_path):
         if should_ignore_path(file_path):
             continue
 
+        ecosystem = None
+
         if file_path.name in SUPPORTED_FILES:
+            ecosystem = SUPPORTED_FILES[file_path.name]
+
+        elif (
+            file_path.name.startswith("requirements")
+            and file_path.suffix == ".txt"
+        ):
+            ecosystem = "python_requirements"
+
+        if ecosystem:
             discovered_files.append({
                 "path": str(file_path),
-                "ecosystem": SUPPORTED_FILES[file_path.name],
+                "ecosystem": ecosystem,
             })
 
     return discovered_files

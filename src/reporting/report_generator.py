@@ -1,6 +1,5 @@
 import csv
 import json
-
 from pathlib import Path
 from collections import Counter
 
@@ -15,11 +14,6 @@ from reportlab.platypus import (
     TableStyle,
     Image,
 )
-from src.security.osv_client import (
-    lookup_vulnerabilities,
-    calculate_security_risk,
-    build_vulnerability_url,
-)
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
@@ -32,7 +26,18 @@ from src.reporting.sbom_generator import (
 from src.security.osv_client import (
     lookup_vulnerabilities,
     calculate_security_risk,
+    build_vulnerability_url,
 )
+
+from src.remediation.ai_remediation_engine import generate_ai_remediation
+
+
+RISK_PRIORITY = {
+    "Low": 1,
+    "Medium": 2,
+    "High": 3,
+    "Unknown": 4,
+}
 
 
 def extract_risk_and_reason(prediction: str):
@@ -51,14 +56,33 @@ def extract_risk_and_reason(prediction: str):
     return risk, reason
 
 
+CPP_PACKAGE_URLS = {
+    "protobuf": "https://github.com/protocolbuffers/protobuf",
+    "absl": "https://github.com/abseil/abseil-cpp",
+    "gtest": "https://github.com/google/googletest",
+    "zlib": "https://zlib.net/",
+    "boost": "https://www.boost.org/",
+    "openssl": "https://www.openssl.org/",
+}
+
+
 def build_package_url(package_name, ecosystem):
-    clean_name = package_name.split("[")[0]
+    clean_name = str(package_name).split("[")[0].strip()
 
     if ecosystem == "python":
         return f"https://pypi.org/project/{clean_name}/"
 
     if ecosystem == "node":
         return f"https://www.npmjs.com/package/{clean_name}"
+
+    if ecosystem == "cpp":
+        return CPP_PACKAGE_URLS.get(
+            clean_name.lower(),
+            f"https://github.com/search?q={clean_name}",
+        )
+
+    if ecosystem == "source":
+        return "https://spdx.org/licenses/"
 
     return ""
 
@@ -74,32 +98,17 @@ def calculate_overall_project_risk(risk_counts):
         return "Medium"
 
     return "Low"
-RISK_PRIORITY = {
-    "Low": 1,
-    "Medium": 2,
-    "High": 3,
-    "Unknown": 4,
-}
 
 
-def calculate_combined_risk(
-    license_risk,
-    security_risk,
-):
+def calculate_combined_risk(license_risk, security_risk):
     if RISK_PRIORITY.get(security_risk, 0) > RISK_PRIORITY.get(license_risk, 0):
         return security_risk
 
     return license_risk
 
 
-def build_combined_reason(
-    license_risk,
-    security_risk,
-):
-    if (
-        license_risk == "High"
-        and security_risk == "High"
-    ):
+def build_combined_reason(license_risk, security_risk):
+    if license_risk == "High" and security_risk == "High":
         return (
             "High license compliance risk combined with "
             "multiple known security vulnerabilities."
@@ -117,13 +126,8 @@ def build_combined_reason(
             "license obligations."
         )
 
-    if (
-        license_risk == "Medium"
-        or security_risk == "Medium"
-    ):
-        return (
-            "Package has moderate compliance or security considerations."
-        )
+    if license_risk == "Medium" or security_risk == "Medium":
+        return "Package has moderate compliance or security considerations."
 
     return "Low combined compliance and security risk."
 
@@ -144,18 +148,35 @@ def generate_risk_chart(risk_summary, chart_path):
     plt.figure(figsize=(5, 5))
     plt.pie(values, labels=labels, autopct="%1.1f%%")
     plt.title("Risk Distribution")
-
     plt.savefig(chart_path, bbox_inches="tight")
     plt.close()
 
 
 def generate_project_summary(structured_results):
-    risks = [item["risk"] for item in structured_results]
+    risks = [
+        item.get("combined_risk", item.get("risk", "Unknown"))
+        for item in structured_results
+    ]
+
     risk_counts = Counter(risks)
 
-    high_risks = [item for item in structured_results if item["risk"] == "High"]
-    medium_risks = [item for item in structured_results if item["risk"] == "Medium"]
-    low_risks = [item for item in structured_results if item["risk"] == "Low"]
+    high_risks = [
+        item
+        for item in structured_results
+        if item.get("combined_risk") == "High"
+    ]
+
+    medium_risks = [
+        item
+        for item in structured_results
+        if item.get("combined_risk") == "Medium"
+    ]
+
+    low_risks = [
+        item
+        for item in structured_results
+        if item.get("combined_risk") == "Low"
+    ]
 
     return {
         "total_dependencies": len(structured_results),
@@ -173,22 +194,11 @@ def generate_project_summary(structured_results):
 
 
 def build_pdf_report(summary, structured_results, pdf_path, chart_path):
-    doc = SimpleDocTemplate(
-        str(pdf_path),
-        pagesize=letter,
-    )
-
+    doc = SimpleDocTemplate(str(pdf_path), pagesize=letter)
     styles = getSampleStyleSheet()
-
     elements = []
 
-    elements.append(
-        Paragraph(
-            "OSS Compliance AI Report",
-            styles["Title"],
-        )
-    )
-
+    elements.append(Paragraph("OSS Compliance AI Report", styles["Title"]))
     elements.append(Spacer(1, 12))
 
     elements.append(
@@ -207,15 +217,12 @@ def build_pdf_report(summary, structured_results, pdf_path, chart_path):
 
     elements.append(Spacer(1, 12))
 
-    risk_table_data = [
-        ["Risk Level", "Count"],
-    ]
+    risk_table_data = [["Risk Level", "Count"]]
 
     for key, value in summary["risk_summary"].items():
         risk_table_data.append([key, str(value)])
 
     risk_table = Table(risk_table_data)
-
     risk_table.setStyle(
         TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
@@ -225,7 +232,6 @@ def build_pdf_report(summary, structured_results, pdf_path, chart_path):
     )
 
     elements.append(risk_table)
-
     elements.append(Spacer(1, 18))
 
     if Path(chart_path).exists():
@@ -237,16 +243,9 @@ def build_pdf_report(summary, structured_results, pdf_path, chart_path):
     high_risks = summary["top_risky_packages"]
 
     if high_risks:
-        elements.append(
-            Paragraph(
-                "Top High Risk Packages",
-                styles["Heading2"],
-            )
-        )
+        elements.append(Paragraph("Top High Risk Packages", styles["Heading2"]))
 
-        table_data = [
-            ["Package", "License", "Risk"],
-        ]
+        table_data = [["Package", "License", "Risk"]]
 
         for item in high_risks:
             table_data.append([
@@ -256,7 +255,6 @@ def build_pdf_report(summary, structured_results, pdf_path, chart_path):
             ])
 
         high_table = Table(table_data)
-
         high_table.setStyle(
             TableStyle([
                 ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
@@ -268,14 +266,7 @@ def build_pdf_report(summary, structured_results, pdf_path, chart_path):
         elements.append(high_table)
 
     elements.append(Spacer(1, 18))
-
-    elements.append(
-        Paragraph(
-            "Generated by OSS Compliance AI",
-            styles["Italic"],
-        )
-    )
-
+    elements.append(Paragraph("Generated by OSS Compliance AI", styles["Italic"]))
     doc.build(elements)
 
 
@@ -289,7 +280,6 @@ def generate_reports(results, output_dir="outputs"):
         risk, reason = extract_risk_and_reason(item["prediction"])
 
         ecosystem = item.get("ecosystem", "unknown")
-
         package_name = item["package"]
         version = item["version"]
 
@@ -300,6 +290,31 @@ def generate_reports(results, output_dir="outputs"):
         )
 
         security_risk = calculate_security_risk(vulnerabilities)
+        combined_risk = calculate_combined_risk(risk, security_risk)
+        combined_reason = build_combined_reason(risk, security_risk)
+
+        remediation_input = {
+            "package": package_name,
+            "version": version,
+            "ecosystem": ecosystem,
+            "license": item["license"],
+            "license_family": item["license_family"],
+            "risk": risk,
+            "reason": reason,
+            "security_risk": security_risk,
+            "combined_risk": combined_risk,
+            "combined_reason": combined_reason,
+            "vulnerability_count": len(vulnerabilities),
+            "vulnerabilities": vulnerabilities,
+        }
+
+        if combined_risk in ["High", "Medium"]:
+            ai_remediation = generate_ai_remediation(remediation_input)
+        else:
+            ai_remediation = (
+                "No AI remediation required. "
+                "Package is currently low combined risk."
+            )
 
         structured_results.append({
             "package": package_name,
@@ -308,28 +323,18 @@ def generate_reports(results, output_dir="outputs"):
             "package_manager": item.get("package_manager", "unknown"),
             "license": item["license"],
             "license_family": item["license_family"],
-
-            # License risk
             "risk": risk,
             "reason": reason,
-
-            # Security risk
             "security_risk": security_risk,
             "vulnerability_count": len(vulnerabilities),
             "vulnerabilities": vulnerabilities,
-
-            # Combined risk
-            "combined_risk": calculate_combined_risk(
-                risk,
-                security_risk,
+            "vulnerability_url": build_vulnerability_url(
+                package_name,
+                ecosystem,
             ),
-
-            "combined_reason": build_combined_reason(
-                risk,
-                security_risk,
-            ),
-
-            # Package URL
+            "combined_risk": combined_risk,
+            "combined_reason": combined_reason,
+            "ai_remediation": ai_remediation,
             "package_url": build_package_url(
                 package_name,
                 ecosystem,
@@ -364,24 +369,21 @@ def generate_reports(results, output_dir="outputs"):
         "vulnerability_url",
         "combined_risk",
         "combined_reason",
+        "ai_remediation",
         "reason",
         "package_url",
     ]
 
+    csv_results = []
+
+    for item in structured_results:
+        csv_item = item.copy()
+        csv_item.pop("vulnerabilities", None)
+        csv_results.append(csv_item)
+
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-
-        csv_results = []
-
-        for item in structured_results:
-            csv_item = item.copy()
-
-            # Remove nested vulnerability objects for CSV export
-            csv_item.pop("vulnerabilities", None)
-
-            csv_results.append(csv_item)
-
         writer.writerows(csv_results)
 
     with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:

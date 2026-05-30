@@ -23,10 +23,13 @@ const COLORS = {
 function App() {
   const [projectPath, setProjectPath] = useState("examples");
   const [uploadFile, setUploadFile] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [scanStage, setScanStage] = useState("");
+
   const [summary, setSummary] = useState(null);
   const [results, setResults] = useState([]);
+
   const [error, setError] = useState("");
 
   const [chatQuestion, setChatQuestion] = useState("");
@@ -42,14 +45,30 @@ function App() {
   const scanProject = async () => {
     setLoading(true);
     resetResults();
+
     setScanStage("Preparing scan...");
 
     const stageTimers = [
-      setTimeout(() => setScanStage("Cloning or preparing project source..."), 700),
-      setTimeout(() => setScanStage("Discovering dependency files..."), 1800),
-      setTimeout(() => setScanStage("Resolving package licenses..."), 3200),
-      setTimeout(() => setScanStage("Running AI compliance analysis..."), 5000),
-      setTimeout(() => setScanStage("Generating reports and charts..."), 7000),
+      setTimeout(
+        () => setScanStage("Cloning or preparing project source..."),
+        700
+      ),
+      setTimeout(
+        () => setScanStage("Discovering dependency files..."),
+        1800
+      ),
+      setTimeout(
+        () => setScanStage("Resolving package licenses..."),
+        3200
+      ),
+      setTimeout(
+        () => setScanStage("Running AI compliance analysis..."),
+        5000
+      ),
+      setTimeout(
+        () => setScanStage("Generating reports and charts..."),
+        7000
+      ),
     ];
 
     try {
@@ -76,25 +95,45 @@ function App() {
 
     setLoading(true);
     resetResults();
+
     setScanStage("Uploading project archive...");
 
     const stageTimers = [
-      setTimeout(() => setScanStage("Extracting uploaded archive..."), 900),
-      setTimeout(() => setScanStage("Discovering dependency files..."), 1800),
-      setTimeout(() => setScanStage("Resolving package licenses..."), 3200),
-      setTimeout(() => setScanStage("Running AI compliance analysis..."), 5000),
-      setTimeout(() => setScanStage("Generating reports and charts..."), 7000),
+      setTimeout(
+        () => setScanStage("Extracting uploaded archive..."),
+        900
+      ),
+      setTimeout(
+        () => setScanStage("Discovering dependency files..."),
+        1800
+      ),
+      setTimeout(
+        () => setScanStage("Resolving package licenses..."),
+        3200
+      ),
+      setTimeout(
+        () => setScanStage("Running AI compliance analysis..."),
+        5000
+      ),
+      setTimeout(
+        () => setScanStage("Generating reports and charts..."),
+        7000
+      ),
     ];
 
     const formData = new FormData();
     formData.append("file", uploadFile);
 
     try {
-      const response = await axios.post(`${API_BASE}/upload-scan`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${API_BASE}/upload-scan`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       setSummary(response.data.summary);
       setResults(response.data.results || []);
@@ -132,6 +171,7 @@ function App() {
     if (risk === "High") return "risk-high";
     if (risk === "Medium") return "risk-medium";
     if (risk === "Low") return "risk-low";
+
     return "risk-unknown";
   };
 
@@ -157,6 +197,7 @@ function App() {
               <th>Package</th>
               <th>Version</th>
               <th>Ecosystem</th>
+              <th>Scope</th>
               <th>License</th>
               <th>Family</th>
               <th>License Risk</th>
@@ -164,6 +205,7 @@ function App() {
               <th>Combined Risk</th>
               <th>Vulnerabilities</th>
               <th>Reason</th>
+              <th>AI Recommendation</th>
               <th>Link</th>
             </tr>
           </thead>
@@ -174,6 +216,7 @@ function App() {
                 <td>{item.package}</td>
                 <td>{item.version}</td>
                 <td>{item.ecosystem}</td>
+                <td>{item.dependency_scope || "runtime"}</td>
                 <td>{item.license}</td>
                 <td>{item.license_family}</td>
 
@@ -184,13 +227,17 @@ function App() {
                 </td>
 
                 <td>
-                  <span className={`badge ${riskClass(item.security_risk)}`}>
+                  <span
+                    className={`badge ${riskClass(item.security_risk)}`}
+                  >
                     {item.security_risk || "Low"}
                   </span>
                 </td>
 
                 <td>
-                  <span className={`badge ${riskClass(item.combined_risk)}`}>
+                  <span
+                    className={`badge ${riskClass(item.combined_risk)}`}
+                  >
                     {item.combined_risk || "Low"}
                   </span>
                 </td>
@@ -198,21 +245,28 @@ function App() {
                 <td>
                   {item.vulnerability_count > 0 ? (
                     <details>
-                      <summary>View {item.vulnerability_count}</summary>
+                      <summary>
+                        View {item.vulnerability_count}
+                      </summary>
 
                       <ul className="vuln-list">
-                        {(item.vulnerabilities || []).map((vuln, vulnIndex) => (
-                          <li key={vulnIndex}>
-                            <a
-                              href={`https://osv.dev/vulnerability/${vuln.id}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {vuln.id}
-                            </a>
-                            {vuln.summary ? ` - ${vuln.summary}` : ""}
-                          </li>
-                        ))}
+                        {(item.vulnerabilities || []).map(
+                          (vuln, vulnIndex) => (
+                            <li key={vulnIndex}>
+                              <a
+                                href={`https://osv.dev/vulnerability/${vuln.id}`}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {vuln.id}
+                              </a>
+
+                              {vuln.summary
+                                ? ` - ${vuln.summary}`
+                                : ""}
+                            </li>
+                          )
+                        )}
                       </ul>
                     </details>
                   ) : (
@@ -223,8 +277,32 @@ function App() {
                 <td>{item.reason}</td>
 
                 <td>
+                  {item.ai_remediation ? (
+                    <details>
+                      <summary>View AI Fix</summary>
+
+                      <div
+                        style={{
+                          maxWidth: "500px",
+                          whiteSpace: "pre-wrap",
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        {item.ai_remediation}
+                      </div>
+                    </details>
+                  ) : (
+                    "No recommendation"
+                  )}
+                </td>
+
+                <td>
                   {item.package_url ? (
-                    <a href={item.package_url} target="_blank" rel="noreferrer">
+                    <a
+                      href={item.package_url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       View
                     </a>
                   ) : (
@@ -239,7 +317,9 @@ function App() {
     </>
   );
 
-  const lowRiskRows = results.filter((item) => item.risk === "Low");
+  const lowRiskRows = results.filter(
+    (item) => item.risk === "Low"
+  );
 
   return (
     <div className="app">
@@ -257,6 +337,7 @@ function App() {
 
           <div className="supported-inputs">
             <p>Supported inputs:</p>
+
             <ul>
               <li>GitHub / GitLab repository URLs</li>
               <li>Generic .git repository URLs</li>
@@ -278,11 +359,14 @@ function App() {
           <input
             type="file"
             accept=".zip,.tar.gz,.tgz"
-            onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+            onChange={(e) =>
+              setUploadFile(e.target.files?.[0] || null)
+            }
           />
 
           <p className="upload-help">
-            Upload a compressed project archive to scan private or local projects.
+            Upload a compressed project archive to scan
+            private or local projects.
           </p>
         </div>
 
@@ -315,9 +399,11 @@ function App() {
             <h4>Sources</h4>
 
             <ul>
-              {(chatResponse.sources || []).map((source, index) => (
-                <li key={index}>{source}</li>
-              ))}
+              {(chatResponse.sources || []).map(
+                (source, index) => (
+                  <li key={index}>{source}</li>
+                )
+              )}
             </ul>
           </div>
         )}
@@ -335,7 +421,11 @@ function App() {
       {summary && (
         <>
           <section className="summary">
-            <div className={`metric ${riskClass(summary.overall_project_risk)}`}>
+            <div
+              className={`metric ${riskClass(
+                summary.overall_project_risk
+              )}`}
+            >
               <span>Overall Risk</span>
               <strong>{summary.overall_project_risk}</strong>
             </div>
@@ -344,6 +434,52 @@ function App() {
               <span>Total Dependencies</span>
               <strong>{summary.total_dependencies}</strong>
             </div>
+
+            {results.length > 0 && (
+              <div className="fix-first-card">
+                <h3>Recommended First Fix</h3>
+
+                {results
+                  .filter(
+                    (item) =>
+                      item.security_risk === "High"
+                  )
+                  .sort(
+                    (a, b) =>
+                      (b.vulnerability_count || 0) -
+                      (a.vulnerability_count || 0)
+                  )
+                  .slice(0, 1)
+                  .map((item, index) => (
+                    <div key={index}>
+                      <strong>{item.package}</strong>
+
+                      <p>
+                        Vulnerabilities:{" "}
+                        {item.vulnerability_count}
+                      </p>
+
+                      <p>
+                        Combined Risk:{" "}
+                        {item.combined_risk}
+                      </p>
+
+                      <details>
+                        <summary>AI Recommendation</summary>
+
+                        <div
+                          style={{
+                            marginTop: "10px",
+                            whiteSpace: "pre-wrap",
+                          }}
+                        >
+                          {item.ai_remediation}
+                        </div>
+                      </details>
+                    </div>
+                  ))}
+              </div>
+            )}
 
             <div className="metric risk-low">
               <span>Low</span>
@@ -365,7 +501,9 @@ function App() {
             <h2>Risk Distribution</h2>
 
             {riskRows.length === 0 ? (
-              <div className="empty-state">No risk data available.</div>
+              <div className="empty-state">
+                No risk data available.
+              </div>
             ) : (
               <ResponsiveContainer width="100%" height={320}>
                 <PieChart>
@@ -379,10 +517,13 @@ function App() {
                     {riskRows.map((entry) => (
                       <Cell
                         key={entry.name}
-                        fill={COLORS[entry.name] || "#6b7280"}
+                        fill={
+                          COLORS[entry.name] || "#6b7280"
+                        }
                       />
                     ))}
                   </Pie>
+
                   <Tooltip />
                   <Legend />
                 </PieChart>
@@ -391,11 +532,17 @@ function App() {
           </section>
 
           <div className="actions">
-            <a href={`${API_BASE}/download/excel`} className="download-button">
+            <a
+              href={`${API_BASE}/download/excel`}
+              className="download-button"
+            >
               Download Excel Report
             </a>
 
-            <a href={`${API_BASE}/download/pdf`} className="download-button">
+            <a
+              href={`${API_BASE}/download/pdf`}
+              className="download-button"
+            >
               Download PDF Report
             </a>
 
@@ -428,11 +575,16 @@ function App() {
 
           {renderTable(
             "Low Risk Packages",
-            summary.low_risk_packages || lowRiskRows.slice(0, 10),
+            summary.low_risk_packages ||
+              lowRiskRows.slice(0, 10),
             "No low-risk packages found."
           )}
 
-          {renderTable("Full Dependency Report", results, "No dependencies found.")}
+          {renderTable(
+            "Full Dependency Report",
+            results,
+            "No dependencies found."
+          )}
         </>
       )}
     </div>

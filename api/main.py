@@ -21,7 +21,7 @@ from pydantic import BaseModel
 
 from src.scanner.project_scanner import analyze_project
 from src.rag.chatbot import ComplianceChatbot
-
+from src.rag.build_vector_store import build_vector_store
 
 app = FastAPI(
     title="OSS Compliance AI API",
@@ -224,6 +224,12 @@ def scan_project(request: ScanRequest):
 
         report_info = analyze_project(scan_target)
 
+        print("Rebuilding RAG vector store with latest scan results...")
+        build_vector_store()
+        global chatbot
+        chatbot = None
+        print("RAG vector store updated.")
+
         return {
             "status": "success",
             "input": request.project_path,
@@ -283,17 +289,27 @@ async def upload_scan(file: UploadFile = File(...)):
 
         report_info = analyze_project(str(extract_dir))
 
+        print("Rebuilding RAG vector store with latest scan results...")
+        build_vector_store()
+        global chatbot
+        chatbot = None
+        print("RAG vector store updated.")
+
         return {
             "status": "success",
-            "source_type": "uploaded_archive",
-            "summary": report_info["summary"],
-            "results": report_info["results"],
+            "input": request.project_path,
+            "source_type": source_type,
+            "scanned_path": scan_target,
             "json_report": report_info["json_report"],
             "csv_report": report_info["csv_report"],
+            "summary_report": report_info["summary_report"],
             "excel_report": report_info.get("excel_report"),
             "pdf_report": report_info.get("pdf_report"),
             "cyclonedx_sbom": report_info.get("cyclonedx_sbom"),
             "spdx_sbom": report_info.get("spdx_sbom"),
+            "overall_project_risk": report_info["summary"]["overall_project_risk"],
+            "summary": report_info["summary"],
+            "results": report_info["results"],
         }
 
     except Exception as e:

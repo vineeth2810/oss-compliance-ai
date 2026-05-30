@@ -23,7 +23,7 @@ class ComplianceChatbot:
     def __init__(self):
         self.retriever = KnowledgeRetriever()
 
-    def build_context(self, query, top_k=3):
+    def build_context(self, query, top_k=8):
         results = self.retriever.search(query, top_k=top_k)
 
         context_parts = []

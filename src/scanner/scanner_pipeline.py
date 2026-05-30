@@ -51,12 +51,85 @@ def scan_package_lock(package_lock_path: str):
     )
 
 
+def normalize_package_name(package_name: str):
+    package_name = str(package_name or "").strip()
+
+    # Remove inline comments accidentally kept by parsers
+    if "#" in package_name:
+        package_name = package_name.split("#", 1)[0].strip()
+
+    # Remove environment markers accidentally kept by parsers
+    if ";" in package_name:
+        package_name = package_name.split(";", 1)[0].strip()
+
+    return package_name
+
+
+def normalize_version(version: str):
+    version = str(version or "unknown").strip()
+
+    if not version:
+        return "unknown"
+
+    return version
+
+
+def is_valid_dependency(dep):
+    package_name = normalize_package_name(dep.get("package", ""))
+
+    if not package_name:
+        return False
+
+    invalid_prefixes = (
+        "-r",
+        "--requirement",
+        "--index-url",
+        "--extra-index-url",
+        "--find-links",
+        "--trusted-host",
+        "-f",
+        "-e",
+        "git+",
+    )
+
+    if package_name.startswith(invalid_prefixes):
+        return False
+
+    invalid_suffixes = (
+        ".txt",
+        ".md",
+        ".rst",
+    )
+
+    if package_name.lower().endswith(invalid_suffixes):
+        return False
+
+    return True
+
+
 def build_results(dependencies, ecosystem, package_manager):
     results = []
 
+    seen = set()
+
     for dep in dependencies:
-        package_name = dep["package"]
-        version = dep["version"]
+        if not is_valid_dependency(dep):
+            continue
+
+        package_name = normalize_package_name(dep["package"])
+        version = normalize_version(dep.get("version", "unknown"))
+
+        key = (
+            package_name.lower(),
+            version,
+            ecosystem,
+            package_manager,
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
 
         license_name = resolve_license(
             package_name=package_name,
@@ -72,6 +145,7 @@ def build_results(dependencies, ecosystem, package_manager):
             license_family=license_family,
             ecosystem=ecosystem,
             package_manager=package_manager,
+            dependency_scope=dep.get("scope", "runtime"),
         )
 
         results.append(scenario)
